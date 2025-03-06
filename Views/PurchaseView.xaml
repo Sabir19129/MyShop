@@ -1,0 +1,127 @@
+﻿<Window x:Class="MyShop.Views.PurchaseView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation="CenterScreen"
+        Title="DataGrid" Height="600" Width="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"    />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Purchase Details" Foreground="Blue" Background="Beige" FontWeight="Bold" FontSize="15" Grid.ColumnSpan="2" Margin="10" />
+        <!-- Supplier Details with Rounded Border -->
+        <Border Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" CornerRadius="7" Background="LightSteelBlue"  
+        HorizontalAlignment="Left" Margin="10">
+            
+        <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Supplier List" FontWeight="DemiBold" Foreground="MidnightBlue" Margin="5">
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding Suppliers}"
+          SelectedItem="{Binding SelectedSupplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          Width="450" Height="20" 
+          Background="MidnightBlue" BorderBrush="MidnightBlue" Foreground="MidnightBlue"/>
+
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="0" CornerRadius="10" Background="Lavender" BorderBrush="Gray" BorderThickness="2" Padding="0,2,2,2" 
+            Margin="10">
+            <StackPanel Orientation="Vertical">
+                <!-- Change to Vertical -->
+                <Border CornerRadius="7" Background="Lavender" Padding="5" Width="98" HorizontalAlignment="Left">
+                    <TextBlock Text="Add Product" FontSize="14" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="Add Product to Purchase" Width="155"  Foreground="Black" Margin="5" HorizontalAlignment="Left" />
+                <TextBlock Text="Search" Margin="5" FontSize="12" Foreground="Black"  Width="98" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                <ComboBox Width="210" 
+ItemsSource="{Binding Products}"  
+SelectedItem="{Binding PurchaseDetail.Product, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                <StackPanel Orientation="Horizontal" >
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Quantity" FontSize="12" Foreground="Black"  Width="98"  FontWeight="DemiBold" />
+                        <TextBox Width="100" HorizontalAlignment="Left" Text="{Binding PurchaseDetail.Quantity, UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="5" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Price" FontSize="12" Foreground="Black"  Width="98" Margin="0,0,0,0" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                        <TextBox  Width="100" HorizontalAlignment="Left"   Text="{Binding PurchaseDetail.Price,  UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="5"/>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="Total" FontSize="12" Foreground="Black" Width="98" HorizontalAlignment="Left" FontWeight="DemiBold" 
+                           Margin="5"/>
+                <TextBox   Text="{Binding PurchaseDetail.TotalAmount, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                <Button Content="Add" Style="{StaticResource BaseButtonStyle}" Command="{Binding AddDetailCommand}" Width="60" Background="#C6E5E0" Foreground="Black" Height="30" 
+                        Margin="5" HorizontalAlignment="Right" />
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="0"  Background="Beige" BorderBrush="Gray" BorderThickness="2"  
+                 Margin="10" CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+              
+   
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Total Items" FontSize="12" Foreground="Black" Width="80" HorizontalAlignment="Left" FontWeight="DemiBold" 
+                   Margin="5,10,10,10"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource FormTextBoxStyle}" Text="{Binding Purchase.PurchaseDetails.Count,Mode=OneWay}" 
+                 TextAlignment="Left" IsEnabled="False" Margin="5" />
+    
+        <TextBlock Grid.Row="1" Text="Total Amount" FontSize="12" Foreground="Black" Width="80" HorizontalAlignment="Left"  FontWeight="DemiBold" 
+                   Margin="5,10,10,10"/>
+                <TextBox  Grid.Column="1" Grid.Row="1" Style="{StaticResource FormTextBoxStyle}"   Text="{Binding Purchase.TotalAmount, 
+            UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" IsEnabled="False" 
+                  Margin="5"/>
+            </Grid>
+            
+        </Border>
+        <Border Background="Lavender" Margin="10" CornerRadius="10" Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" 
+                BorderThickness="2" BorderBrush="Gray" >
+            <DataGrid  Margin="0,5,5,5" Background="Transparent" AutoGenerateColumns="False" BorderThickness="2" ItemsSource="{Binding Purchase.PurchaseDetails}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Product" Binding="{Binding Product.Name}" FontWeight="Bold" Width="*" />
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" FontWeight="Bold" Width="100" />
+                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" FontWeight="Bold" Width="100" />
+                    <DataGridTextColumn Header="Total Price" Binding="{Binding TotalAmount}" FontWeight="Bold" Width="100" />
+                    <DataGridTemplateColumn Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
+                     Background="Red" Foreground="Yellow"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="left">
+            <TextBlock Style="{StaticResource FormTextBlockStyle}"  Text="Payment Method" Margin="5,20" FontSize="12" Foreground="Black"  
+                      Width="98" Height="20"
+                       HorizontalAlignment="Left" FontWeight="DemiBold"  />
+            <ComboBox Width="100" Height="30"
+ItemsSource="{Binding Payments}"  
+SelectedItem="{Binding PurchaseDetail.Product, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
+            <Button Style="{StaticResource BaseButtonStyle}" x:Name="e" Content="Cancel" HorizontalAlignment="Right"  Width="100" Height="30"  
+                Margin="5" Command="{Binding CancelCommand}"  Background="DarkRed" Foreground="white"/>
+            <Button Style="{StaticResource BaseButtonStyle}"  Content="Check Out" HorizontalAlignment="Right"  Width="100" Height="30"  
+    Margin="10" Command="{Binding CancelCommand}"  Background="DarkGreen" Foreground="white"/>
+
+        </StackPanel>
+    </Grid>
+    
+</Window>
