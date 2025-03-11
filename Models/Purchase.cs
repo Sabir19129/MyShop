@@ -100,13 +100,14 @@ namespace MyShop.Models
                         {
                             foreach (var purchaseDetail in PurchaseDetails)
                             {
-                                string queryDetail = "INSERT INTO PurchaseDetail (PurchaseId, ProductId, Quantity, Price, TotalPrice) VALUES (@PurchaseId, @ProductId, @Quantity, @Price, @TotalPrice)";
+                                string queryDetail = "INSERT INTO PurchaseDetail (PurchaseId, ProductId, Quantity, Price) VALUES (@PurchaseId, @ProductId, @Quantity, @Price)";
                                 using (SqlCommand command1 = new SqlCommand(queryDetail, connection))
                                 {
                                     command1.Parameters.AddWithValue("@PurchaseId", newId);
                                     command1.Parameters.AddWithValue("@ProductId", purchaseDetail.Product.Id);
                                     command1.Parameters.AddWithValue("@Quantity", purchaseDetail.Quantity);
-                                    command1.Parameters.AddWithValue("@Price", purchaseDetail.Price); 
+                                    command1.Parameters.AddWithValue("@Price", purchaseDetail.Price);
+                                   // command1.Parameters.AddWithValue("@TotalPrice", purchaseDetail.Quantity*purchaseDetail.Price);
                                     command1.ExecuteNonQuery();
                                 }
                                 Product.UpdateStock(purchaseDetail.Product.Id, purchaseDetail.Quantity); // Update stock
@@ -192,26 +193,30 @@ namespace MyShop.Models
         }
 
         // Method to delete a Purchase
-        public void Delete(int ProductId)
+        public void Delete(int PurchaseId)
         {
-            if (ProductId <= 0)
+            if (PurchaseId <= 0)
             {
-                MessageBox.Show("Invalid ProductId Please select a valid Purchase.");
+                MessageBox.Show("Invalid PurchaseId Please select a valid Purchase.");
                 return;
             }
 
-            string query = "DELETE FROM Purchase WHERE ProductId = @ProductId";
+            string query = "DELETE FROM PurchaseDetail WHERE PurchaseId = @PurchaseId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ProductId", ProductId);
+                    command.Parameters.AddWithValue("@PurchaseId", PurchaseId);
 
                     try
                     {
                         connection.Open();
                         int rowsAffected = command.ExecuteNonQuery();
+
+                        query = "DELETE FROM Purchase WHERE Id = @PurchaseId";
+
+                        command.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
                         {

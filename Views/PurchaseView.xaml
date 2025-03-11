@@ -13,25 +13,26 @@
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"    />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="Purchase Details" Foreground="Blue" Background="Beige" FontWeight="Bold" FontSize="15" Grid.ColumnSpan="2" Margin="10" />
         <!-- Supplier Details with Rounded Border -->
-        <Border Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" CornerRadius="7" Background="LightSteelBlue"  
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="1" BorderThickness="2" BorderBrush="Gray" CornerRadius="7" Background="LightSteelBlue"  
         HorizontalAlignment="Left" Margin="10">
             
         <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBlock Text="Supplier List" FontWeight="DemiBold" Foreground="MidnightBlue" Margin="5">
+                <TextBlock Text="Supplier List" FontWeight="DemiBold" Foreground="MidnightBlue" Margin="5" Width="80">
                 </TextBlock>
                 <ComboBox ItemsSource="{Binding Suppliers}"
           SelectedItem="{Binding SelectedSupplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-          Width="450" Height="20" 
+          Width="800" Height="20"
           Background="MidnightBlue" BorderBrush="MidnightBlue" Foreground="MidnightBlue"/>
 
             </StackPanel>
         </Border>
-        <Border Grid.Row="2" Grid.Column="0" CornerRadius="10" Background="Lavender" BorderBrush="Gray" BorderThickness="2" Padding="0,2,2,2" 
+        <Border Grid.Row="2" Grid.Column="1" CornerRadius="10" Background="Lavender" BorderBrush="Gray" BorderThickness="2" Padding="0,2,2,2" 
             Margin="10">
             <StackPanel Orientation="Vertical">
                 <!-- Change to Vertical -->
@@ -88,9 +89,10 @@ SelectedItem="{Binding PurchaseDetail.Product, Mode=TwoWay, UpdateSourceTrigger=
             </Grid>
             
         </Border>
-        <Border Background="Lavender" Margin="10" CornerRadius="10" Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" 
+        <Border Background="Lavender" Margin="10" CornerRadius="10" Grid.Row="2" Grid.RowSpan="1" Grid.Column="2" 
                 BorderThickness="2" BorderBrush="Gray" >
-            <DataGrid  Margin="0,5,5,5" Background="Transparent" AutoGenerateColumns="False" BorderThickness="2" ItemsSource="{Binding Purchase.PurchaseDetails}">
+            <DataGrid CanUserAddRows="False"  Margin="0,5,5,5" Background="Transparent" AutoGenerateColumns="False" BorderThickness="0"  ItemsSource="{Binding Purchase.PurchaseDetails}" 
+                       SelectionChanged="DataGrid_SelectionChanged_1">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Product" Binding="{Binding Product.Name}" FontWeight="Bold" Width="*" />
                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" FontWeight="Bold" Width="100" />
@@ -99,8 +101,12 @@ SelectedItem="{Binding PurchaseDetail.Product, Mode=TwoWay, UpdateSourceTrigger=
                     <DataGridTemplateColumn Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Delete" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
-                     Background="Red" Foreground="Yellow"/>
+                                <Button Width="Auto"  
+                    Style="{StaticResource DeleteButtonStyle}" 
+                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                    CommandParameter="{Binding}" 
+                    BorderThickness="0"
+                    Background="White" Foreground="Yellow"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -112,15 +118,17 @@ SelectedItem="{Binding PurchaseDetail.Product, Mode=TwoWay, UpdateSourceTrigger=
             <TextBlock Style="{StaticResource FormTextBlockStyle}"  Text="Payment Method" Margin="5,20" FontSize="12" Foreground="Black"  
                       Width="98" Height="20"
                        HorizontalAlignment="Left" FontWeight="DemiBold"  />
-            <ComboBox Width="100" Height="30"
+            <ComboBox Width="100" Height="25"
 ItemsSource="{Binding Payments}"  
 SelectedItem="{Binding PurchaseDetail.Product, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
-            <Button Style="{StaticResource BaseButtonStyle}" x:Name="e" Content="Cancel" HorizontalAlignment="Right"  Width="100" Height="30"  
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right">
+            <Button Style="{StaticResource BaseButtonStyle}"  Content="Cancel" HorizontalAlignment="Right"  Width="100" Height="30"  
                 Margin="5" Command="{Binding CancelCommand}"  Background="DarkRed" Foreground="white"/>
             <Button Style="{StaticResource BaseButtonStyle}"  Content="Check Out" HorizontalAlignment="Right"  Width="100" Height="30"  
-    Margin="10" Command="{Binding CancelCommand}"  Background="DarkGreen" Foreground="white"/>
+    Margin="10" Command="{Binding SaveCommand}"  Background="DarkGreen" Foreground="white"/>
+
+            
 
         </StackPanel>
     </Grid>

@@ -92,6 +92,73 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="DeleteButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="Transparent">
+                            <Border
+                  x:Name="BigButton"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="LightBlue"
+                  BorderThickness="0"
+                  CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions >
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/Images/icons8-delete-100.png" Width="25"  Margin="5"/> <!--Replace with Image-->
+                                    <TextBlock
+                                        Grid.Column="1"
+                          x:Name="ButtonText"
+                          Margin="5"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          FontWeight="{TemplateBinding FontWeight}"
+                          Foreground="{TemplateBinding Foreground}"
+                          Text="{TemplateBinding Content}"
+                          TextAlignment="Center"
+                          TextWrapping="Wrap" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="BigButton" Property="Background" Value="RED" />
+                                <Setter TargetName="BigButton" Property="BorderBrush" Value="Transparent" />
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BigButton" Property="Background" Value="red" />
+                                <Setter TargetName="BigButton" Property="BorderBrush" Value="Transparent" />
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="BigButton" Property="Background" Value="LightGray" />
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="Gray" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BigButton" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="0.99" ScaleY="0.99" />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
 

@@ -212,11 +212,11 @@ namespace MyShop.ViewModels
         private void ExecuteSaveCommand()
         {
             // Check if required fields are filled
-            if (PurchaseDetail.Product == null )
-            {
-                MessageBox.Show("Please select Product.");
-                return;
-            }
+            //if (PurchaseDetail.Product == null )
+            //{
+            //    MessageBox.Show("Please select Product.");
+            //    return;
+            //}
             Purchase.Insert();
           
             Purchase = new Purchase();  // Reset after save
@@ -306,7 +306,8 @@ namespace MyShop.ViewModels
 
         private void ExecuteDeleteCommand(object p)
         {
-            if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.Quantity <= 0 || PurchaseDetail.Price <= 0)
+            if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.TotalAmount ==0 || PurchaseDetail.Quantity <= 0 
+                || PurchaseDetail.Price <= 0)
             {
                 MessageBox.Show("Please select a Purchase to delete.");
                 return;
@@ -359,6 +360,7 @@ namespace MyShop.ViewModels
             }
         }
 
+
         private void ExecuteCancelCommand()
         {
             var result = MessageBox.Show("This will cancel all your entries of Purchase. Do you want to continue?",
@@ -370,6 +372,33 @@ namespace MyShop.ViewModels
             }
             else
             {  
+            }
+        }
+        private RelayCommand _CheckOutCommand;
+        public ICommand CheckOutCommand
+        {
+            get
+            {
+                if (_CheckOutCommand == null)
+                {
+                    _CheckOutCommand = new RelayCommand(p => ExecuteCheckOutCommand());
+                }
+                return _CheckOutCommand;
+            }
+        }
+
+
+        private void ExecuteCheckOutCommand()
+        {
+            var result = MessageBox.Show("You want to check Out or Continue Shopping?",
+                                         "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Purchase = new Purchase(); // This will now reflect in the UI
+            }
+            else
+            {
             }
         }
         private RelayCommand _PaymentCommand;
