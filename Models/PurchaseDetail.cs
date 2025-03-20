@@ -2,14 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml.Linq;
 
 namespace MyShop.Models
 {
     internal class PurchaseDetail: BindableBase
     {
+        private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
 
         public event EventHandler QuantityChanged;
 
@@ -59,7 +63,7 @@ namespace MyShop.Models
                 {
                     _Quantity = value;
                     OnPropertyChanged(nameof(Quantity));
-                    CalculateTotalAmount();
+                    CalculateTotalPrice();
                     QuantityChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -74,31 +78,37 @@ namespace MyShop.Models
                 {
                     _Price = value;
                     OnPropertyChanged(nameof(Price));
-                    CalculateTotalAmount();
+                    CalculateTotalPrice();
                 }
             }
         }
          
         
-        private int _TotalAmount;
+        private int _TotalPrice;
 
-        public int TotalAmount
+        public int TotalPrice
 
         {
-            get { return _TotalAmount; }
+            get { return _TotalPrice; }
             set
             {
-                if (_TotalAmount != value)
+                if (_TotalPrice != value)
                 {
-                    _TotalAmount = value;
-                    OnPropertyChanged(nameof(TotalAmount));
+                    _TotalPrice = value;
+                    OnPropertyChanged(nameof(TotalPrice));
                     
                 }
             }
         }
-        public void CalculateTotalAmount()
+        public void CalculateTotalPrice()
         {
-            TotalAmount = Quantity * Price;
+            TotalPrice = Quantity * Price;
         }
+       
+        public override string ToString()
+        {
+            return Product.Name; // This will show the name when displaying a User object
+        }
+
     }
 }

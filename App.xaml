@@ -106,41 +106,22 @@
                   BorderBrush="LightBlue"
                   BorderThickness="0"
                   CornerRadius="5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions >
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Source="/Images/icons8-delete-100.png" Width="25"  Margin="5"/> <!--Replace with Image-->
-                                    <TextBlock
-                                        Grid.Column="1"
-                          x:Name="ButtonText"
-                          Margin="5"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          FontWeight="{TemplateBinding FontWeight}"
-                          Foreground="{TemplateBinding Foreground}"
-                          Text="{TemplateBinding Content}"
-                          TextAlignment="Center"
-                          TextWrapping="Wrap" />
-                                </Grid>
+                                <Image Source="/Images/bin.png" Width="25"  Margin="5"/>
+                                <!--Replace with Image-->
                             </Border>
                         </Grid>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="BigButton" Property="Background" Value="RED" />
-                                <Setter TargetName="BigButton" Property="BorderBrush" Value="Transparent" />
-                                <Setter TargetName="ButtonText" Property="Foreground" Value="White" />
+                                <Setter TargetName="BigButton" Property="Background" Value="gray" />
+                                <Setter TargetName="BigButton" Property="BorderBrush" Value="Transparent" /> 
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="BigButton" Property="Background" Value="red" />
-                                <Setter TargetName="BigButton" Property="BorderBrush" Value="Transparent" />
-                                <Setter TargetName="ButtonText" Property="Foreground" Value="White" />
+                                <Setter TargetName="BigButton" Property="Background" Value="gray" />
+                                <Setter TargetName="BigButton" Property="BorderBrush" Value="Transparent" /> 
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="BigButton" Property="Background" Value="LightGray" />
-                                <Setter TargetName="ButtonText" Property="Foreground" Value="Gray" />
+                                <Setter TargetName="BigButton" Property="Background" Value="LightGray" /> 
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="BigButton" Property="RenderTransform">

@@ -233,7 +233,8 @@ namespace MyShop.Models
         internal IEnumerable<Sales> FetchSales()
         {
             List<Sales> salesList = new List<Sales>();
-            string query = "SELECT pr.Id AS ProductId, s.Quantity, s.PaymentMethod, s.Price, s.TotalPrice, s.SaleDate, pr.Name AS ProductName FROM Product pr  INNER JOIN Sales s ON s.ProductId = pr.Id";
+            string query = "SELECT pr.Id AS ProductId, s.Quantity, s.PaymentMethod, s.Price, s.TotalPrice, s.SaleDate, pr.Name AS ProductName " +
+                "FROM Product pr  INNER JOIN Sales s ON s.ProductId = pr.Id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

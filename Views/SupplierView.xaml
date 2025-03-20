@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views"
         mc:Ignorable="d"
-        Title="My Shop" Height="150" Width="550"
+        Title="My Shop" Height="600" Width="900"
         Background="LightGray">
 
     <Grid>
@@ -52,7 +52,10 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Id}" Width="200" />
                                     <TextBlock Text="{Binding Name}" Width="200" />
+                                    <TextBox Text="{Binding Address}" Width="200"/>
+
                                     <Button Content="Delete" Command="{Binding DataContext.DeleteCommand, RelativeSource=
                                         {RelativeSource AncestorType={x:Type ListBox}, Mode=FindAncestor}}" CommandParameter="{Binding}" 
                                          Width="50" 

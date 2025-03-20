@@ -9,17 +9,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\bin.png" />
+    <None Remove="Images\delete-128 %281%29.png" />
+    <None Remove="Images\delete.png" />
     <None Remove="Images\download.png" />
     <None Remove="Images\icons8-delete-100.png" />
+    <None Remove="Images\icons8-delete-48.png" />
     <None Remove="Images\mic.png" />
     <None Remove="Images\th.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\bin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\delete-128 (1).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\delete.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\download.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\icons8-delete-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\icons8-delete-48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\mic.png">

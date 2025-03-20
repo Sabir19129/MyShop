@@ -2,6 +2,8 @@
 using MyShop.Common;
 using MyShop.Models;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Security.Cryptography.Xml;
 using System.Windows;
 using System.Windows.Input;
 

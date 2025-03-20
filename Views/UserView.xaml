@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views"
         mc:Ignorable="d"
-        Title="My Shop" Height="440" Width="550"
+        Title="My Shop" Height="600" Width="900"
         Background="LightGray">
 
     <Grid>

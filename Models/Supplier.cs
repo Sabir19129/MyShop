@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace MyShop.Models
 {
-    internal class Supplier : BindableBase
+    internal class Supplier : BindableBase, IEquatable<Supplier>
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
         #region Properties
@@ -221,6 +221,8 @@ namespace MyShop.Models
                                     Contact = reader["Contact"].ToString(),
                                     Address = reader["Address"].ToString()
                                 });
+
+                                
                             }
                         }
                     }
@@ -237,9 +239,15 @@ namespace MyShop.Models
         // Override ToString method for better display in UI
         public override string ToString()
         {
-            return "Name" + "_" + Name +"/ " + "Address" + "_" + Address+"/" + "Contact" + "_" + Contact; // This will show the name when displaying a User object
+            return Name; // This will show the name when displaying a User object
         }
         #endregion
 
+      
+        public bool Equals(Supplier? other)
+        {
+            if (other == null) return false;
+            return this.Id == other.Id;
+        }
     }
 }

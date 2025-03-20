@@ -59,21 +59,12 @@ namespace MyShop
         }
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-          
+
             // Make sure to instantiate the PaymentView and ViewModel
             PaymentView PaymentView = new PaymentView();
             PaymentViewModel PaymentViewModel = new PaymentViewModel();
             PaymentView.DataContext = PaymentViewModel; // Set DataContext for data binding
             PaymentView.ShowDialog(); // SuppliersView as a dialog
-        }
-        private void Button_Click_6(object sender, RoutedEventArgs e)
-        {
-
-            // Make sure to instantiate the PaymentView and ViewModel
-            PurchaseListView PurchaseListView = new PurchaseListView();
-            PurchaseViewModel PurchaseViewModel = new PurchaseViewModel();
-            PurchaseListView.DataContext = PurchaseViewModel; // Set DataContext for data binding
-            PurchaseListView.ShowDialog(); // SuppliersView as a dialog
         }
 
     }

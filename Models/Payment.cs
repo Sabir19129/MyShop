@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace MyShop.Models
 {
-    internal class Payment : BindableBase
+    internal class Payment : BindableBase, IEquatable<Payment>
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
         #region Properties
@@ -208,6 +208,11 @@ namespace MyShop.Models
             return Name; // This will show the name when displaying a User object
         }
         #endregion
+        public bool Equals(Payment? other)
+        {
+            if (other == null) return false;
+            return this.Id == other.Id;
+        }
 
     }
 }

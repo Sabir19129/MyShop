@@ -23,7 +23,8 @@ namespace MyShop.ViewModels
             IsSaveMode = false;
             Suppliers = Supplier.FetchSuppliers();
             Payments = Payment.FetchPayments();
-
+            PurchaseDetail = new PurchaseDetail();
+            //Purchases = Purchase.FetchPurchases();
         }
         #endregion
         #region Properties
@@ -41,6 +42,20 @@ namespace MyShop.ViewModels
                 }
             }
         }
+        private Purchase _selectedPurchase;
+        public Purchase SelectedPurchase
+        {
+            get { return _selectedPurchase; }
+            set
+            {
+                if (_selectedPurchase != value)
+                {
+                    _selectedPurchase = value;
+                    OnPropertyChanged(nameof(SelectedPurchase));
+                }
+            }
+        }
+
 
 
         private Purchase _purchase;
@@ -63,7 +78,7 @@ namespace MyShop.ViewModels
 
         private void PurchaseDetails_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Purchase.TotalAmount = Purchase.PurchaseDetails.Sum(x=> x.TotalAmount);
+            Purchase.TotalPrice = Purchase.PurchaseDetails.Sum(x=> x.TotalPrice);
         }
 
         //private List<Purchase> _purchaselist;
@@ -192,6 +207,19 @@ namespace MyShop.ViewModels
                 }
             }
         }
+        private List<PurchaseDetail> _PurchaseDetails;
+        public List<PurchaseDetail> PurchaseDetails
+        {
+            get { return _PurchaseDetails; }
+            set
+            {
+                if (_PurchaseDetails != value)
+                {
+                    _PurchaseDetails = value;
+                    OnPropertyChanged(nameof(PurchaseDetails));
+                }
+            }
+        }
 
         #endregion
         #region ICmd Members
@@ -217,8 +245,16 @@ namespace MyShop.ViewModels
             //    MessageBox.Show("Please select Product.");
             //    return;
             //}
-            Purchase.Insert();
-          
+
+            if (Purchase.Id == 0)//Id is zero means it's new purchase
+            {
+                Purchase.Insert();//Insert purchase
+            }
+            else//Purchase needs to be updated
+            {
+                Purchase.Update();//Update purchase
+            }
+
             Purchase = new Purchase();  // Reset after save
             Purchases = Purchase.FetchPurchases();
 
@@ -237,22 +273,21 @@ namespace MyShop.ViewModels
                 return _UpdateCommand;
             }
         }
+
         private void ExecuteUpdateCommand()
         {
             // Check if required fields are filled
-            if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.Quantity <= 0 || PurchaseDetail.Price <= 0)
+            if (SelectedPurchase ==null)
             {
                 MessageBox.Show("Please select a product to update.");
                 return;
             }
+            Purchase = SelectedPurchase;
 
-            // Insert the updated purchase
-            Purchase.Update();
-            Purchase = new Purchase();  // Reset after update
-            Purchases = Purchase.FetchPurchases();
 
-            // After updating, set IsEditMode to true (show Update button)
-            IsEditMode = false;
+          
+
+          
         }
         private RelayCommand _AddDetailCommand;
         public ICommand AddDetailCommand
@@ -279,7 +314,7 @@ namespace MyShop.ViewModels
                 Product = PurchaseDetail.Product,
                 Quantity = PurchaseDetail.Quantity,
                 Price = PurchaseDetail.Price,
-                TotalAmount = PurchaseDetail.TotalAmount,
+                TotalPrice = PurchaseDetail.TotalPrice,
                 
             });
             OnPropertyChanged(nameof(PurchaseDetail)); // Notify UI
@@ -304,30 +339,55 @@ namespace MyShop.ViewModels
             }
         }
 
-        private void ExecuteDeleteCommand(object p)
+
+        // DeletePurchaseDetailCommand to delete a Purchase
+        private RelayCommand _DeletePurchaseDetailCommand;
+        public ICommand DeletePurchaseDetailCommand
         {
-            if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.TotalAmount ==0 || PurchaseDetail.Quantity <= 0 
-                || PurchaseDetail.Price <= 0)
+            get
             {
-                MessageBox.Show("Please select a Purchase to delete.");
+                if (_DeletePurchaseDetailCommand == null)
+                {
+                    _DeletePurchaseDetailCommand = new RelayCommand(p => ExecuteDeletePurchaseDetailCommand(p));
+                }
+                return _DeletePurchaseDetailCommand;
+            }
+        }
+
+        private void ExecuteDeletePurchaseDetailCommand(object p)
+        {
+            var purchase = p as PurchaseDetail;
+            if (purchase == null || purchase.Product == null || purchase.Id <= 0)
+            {
+                MessageBox.Show("Please select a valid PurchaseDetail to delete.");
                 return;
             }
 
-            var purchase = p as Purchase;
-            if (purchase == null) return;
-
-            var result = MessageBox.Show($"This will delete {PurchaseDetail.Product.Id} permanently. Do you want to proceed?",
+            var result = MessageBox.Show($"This will delete {purchase.Product.Id} permanently. Do you want to proceed?",
                                           "Confirm Delete",
                                           MessageBoxButton.YesNo,
                                           MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
-                Purchase.Delete(PurchaseDetail.Product.Id); // Delete the Purchase
-                Purchases = Purchase.FetchPurchases(); // Refresh Purchases
-                Purchase = new Purchase(); // Reset Purchase
-            }
+                Purchase.DeletePurchaseDetail(purchase.Id);
+                Purchase.PurchaseDetails.Remove(purchase);
+
+              }
         }
+
+
+
+
+        private void ExecuteDeleteCommand(object p)
+        {
+            // Check if required fields are filled
+           
+
+
+        }
+
+
 
         // FetchCommand to get Purchases
         private RelayCommand _FetchCommand;
@@ -345,7 +405,8 @@ namespace MyShop.ViewModels
 
         private void ExecuteFetchCommand()
         {
-            Purchases = Purchase.FetchPurchases(); // Fetch the list of purchases
+            Purchases = Purchase.FetchPurchases();
+            //Purchases = Purchase.FetchPurchaseDetails();// Fetch the list of purchases
         }
         private RelayCommand _CancelCommand;
         public ICommand CancelCommand
