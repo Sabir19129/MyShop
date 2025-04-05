@@ -56,6 +56,8 @@ namespace MyShop.ViewModels
                 }
             }
         }
+        private List<int> DeletedIds { get; set; } = new List<int>();
+
         private RelayCommand _AddDetailCommand;
         public ICommand AddDetailCommand
         {
@@ -76,7 +78,7 @@ namespace MyShop.ViewModels
                 return;
             }
 
-            Purchase.PurchaseDetails.Add(new PurchaseDetail
+            SelectedPurchase.PurchaseDetails.Add(new PurchaseDetail
             {
                 Product = PurchaseDetail.Product,
                 Quantity = PurchaseDetail.Quantity,
@@ -88,6 +90,82 @@ namespace MyShop.ViewModels
 
             PurchaseDetail = new PurchaseDetail(); // Reset for new entry
                                                    // Reset for the next entry
+        }
+        private RelayCommand _DeletePurchaseDetailCommand;
+        public ICommand DeletePurchaseDetailCommand
+        {
+            get
+            {
+                if (_DeletePurchaseDetailCommand == null)
+                {
+                    _DeletePurchaseDetailCommand = new RelayCommand(p => ExecuteDeletePurchaseDetailCommand(p));
+                }
+                return _DeletePurchaseDetailCommand;
+            }
+        }
+
+        private void ExecuteDeletePurchaseDetailCommand(object p)
+        {
+            // if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.TotalPrice ==0 || PurchaseDetail.Quantity <= 0 
+            //   || PurchaseDetail.Price <= 0)
+            //{
+            //    MessageBox.Show("Please select a Purchase to delete.");
+            //    return;
+            //}
+
+            var purchaseDetail = p as PurchaseDetail;
+            if (purchaseDetail == null) return;
+
+            var result = MessageBox.Show($"This will delete {purchaseDetail.Product.Id} permanently. Do you want to proceed?",
+                                          "Confirm Delete",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                DeletedIds.Add(purchaseDetail.Id);
+
+                SelectedPurchase.PurchaseDetails.Remove(purchaseDetail);
+                //Purchases = Purchase.FetchPurchases(); // Refresh Purchases
+                //Purchase = new Purchase(); // Reset Purchase
+            }
+        }
+        private RelayCommand _FetchCommand;
+        public ICommand FetchCommand
+        {
+            get
+            {
+                if (_FetchCommand == null)
+                {
+                    _FetchCommand = new RelayCommand(p => ExecuteFetchCommand());
+                }
+                return _FetchCommand;
+            }
+        }
+
+        private void ExecuteFetchCommand()
+        {
+            Purchases = Purchase.FetchPurchases();
+            //Purchases = Purchase.FetchPurchaseDetails();// Fetch the list of purchases
+        }
+        private RelayCommand _UpdateCommand;
+        public ICommand UpdateCommand
+        {
+            get
+            {
+                if (_UpdateCommand == null)
+                {
+                    _UpdateCommand = new RelayCommand(p => ExecuteUpdateCommand());
+                }
+                return _UpdateCommand;
+            }
+        }
+
+        private void ExecuteUpdateCommand()
+        {
+            //PurchaseDetail.Update();
+            Purchases = Purchase.FetchPurchases();
+            //Purchases = Purchase.FetchPurchaseDetails();// Fetch the list of purchases
         }
 
 
