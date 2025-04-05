@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace MyShop.Models
 {
-    internal class Product : BindableBase// The BindableBase class implements INotifyPropertyChanged to enable property change notifications
+    public class Product : BindableBase// The BindableBase class implements INotifyPropertyChanged to enable property change notifications
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
 

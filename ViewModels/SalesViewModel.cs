@@ -9,7 +9,7 @@ using System.Windows.Input;
 namespace MyShop.ViewModels
 {
 
-    internal class SalesViewModel : BindableBase 
+    internal class SalesViewModel : TabViewModel
 
     {
         #region Property    
@@ -59,7 +59,7 @@ namespace MyShop.ViewModels
 
                     OnPropertyChanged(nameof(SelectedPaymentMethod));
 
-                    Sales.PaymentMethod = SelectedPaymentMethod;
+                    //Sales.PaymentMethod = SelectedPaymentMethod;
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace MyShop.ViewModels
                     //IsSaveMode = true;
                     // IsEditMode = false;  // You might also want to set IsEditMode to false if you're not in edit mode
 
-                    Sales.Product.Id = SelectedProduct.Id;
+                   // Sales.Product.Id = SelectedProduct.Id;
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace MyShop.ViewModels
 
         private void ExecuteUpdateCommand()
         {
-            Sales.Update(); // Update the Sales
+           // Sales.Update(); // Update the Sales
             Sales = new Sales(); // Reset the Sales object 
         }
 

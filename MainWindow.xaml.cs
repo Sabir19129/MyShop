@@ -9,7 +9,10 @@ namespace MyShop
         public MainWindow()
         {
             InitializeComponent();
+
+            this.DataContext = new MainViewModel();
         }
+
         PaymentView paymentView = new PaymentView
         {
             DataContext = new PaymentViewModel() // Ensure ViewModel is set

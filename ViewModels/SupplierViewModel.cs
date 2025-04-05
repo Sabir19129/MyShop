@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    internal class SupplierViewModel : BindableBase
+    internal class SupplierViewModel : TabViewModel
     {
         #region Properties
         public SupplierViewModel()

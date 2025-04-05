@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    internal class PaymentViewModel : BindableBase
+    internal class PaymentViewModel : TabViewModel
     {
         #region Properties
         public PaymentViewModel()

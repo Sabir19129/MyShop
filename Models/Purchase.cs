@@ -15,7 +15,7 @@ using System.Xml.Linq;
 
 namespace MyShop.Models
 {
-    internal class Purchase : BindableBase
+    public class Purchase : BindableBase
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
         #region Properties
@@ -24,6 +24,20 @@ namespace MyShop.Models
         {
             PurchaseDetails = new ObservableCollection<PurchaseDetail>();
         }
+        private ObservableCollection<PurchaseDetail> _PurchaseDetails;
+        public ObservableCollection<PurchaseDetail> PurchaseDetails
+        {
+            get { return _PurchaseDetails; }
+            set
+            {
+                if (_PurchaseDetails != value)
+                {
+                    _PurchaseDetails = value;
+                    OnPropertyChanged(nameof(PurchaseDetails));
+                }
+            }
+        }
+
         private int _Id;
         public int Id
         {
@@ -66,20 +80,6 @@ namespace MyShop.Models
                 }
             }
         }
-
-        private ObservableCollection<PurchaseDetail> _PurchaseDetails;
-        public ObservableCollection<PurchaseDetail> PurchaseDetails
-        {
-            get { return _PurchaseDetails; }
-            set
-            {
-                if (_PurchaseDetails != value)
-                {
-                    _PurchaseDetails = value;
-                    OnPropertyChanged(nameof(PurchaseDetails));
-                }
-            }
-        }
         private Supplier _Supplier;
         public Supplier Supplier
         {
@@ -103,6 +103,19 @@ namespace MyShop.Models
                 {
                     _Payment = value;
                     OnPropertyChanged(nameof(Payment));
+                }
+            }
+        }
+        private PurchaseDetail _PurchaseDetail = new PurchaseDetail();
+        public PurchaseDetail PurchaseDetail
+        {
+            get { return _PurchaseDetail; }
+            set
+            {
+                if (_PurchaseDetail != value)
+                {
+                    _PurchaseDetail = value;
+                    OnPropertyChanged(nameof(PurchaseDetail));
                 }
             }
         }
@@ -152,7 +165,7 @@ namespace MyShop.Models
                 }
             }
         }
-        public List<Purchase> FetchPurchases()
+        public static List<Purchase> FetchPurchases()
         {
             string query = @"SELECT 
             p.Id AS PurchaseId, 
@@ -209,7 +222,7 @@ namespace MyShop.Models
 
             #endregion
         }
-        public void FillPurchaseDetail(Purchase purchase)
+        public static void FillPurchaseDetail(Purchase purchase)
         {
             string query = @"SELECT pd.Id, PurchaseId, pd.ProductId, P.Name as ProductName, pd.Quantity, 
                 pd.Price, pd.TotalPrice From PurchaseDetail pd Inner Join Product p on p.Id = pd.ProductId where pd.PurchaseId = " + purchase.Id;
@@ -247,7 +260,7 @@ namespace MyShop.Models
 
             purchase.PurchaseDetails = PurchaseDetails;
         }
-        public void Update()
+        public void Update(List<int> p_DeletedIds)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -300,6 +313,20 @@ namespace MyShop.Models
                                 updatePurchaseDetailCommand.Parameters.AddWithValue("@Price", purchaseDetail.Price);
                                 updatePurchaseDetailCommand.Parameters.AddWithValue("@PurchaseDetailId", purchaseDetail.Id);
                                 updatePurchaseDetailCommand.ExecuteNonQuery();
+
+                            }
+                            using (SqlCommand updatePurchaseDetailCommand = new SqlCommand(updatePurchaseDetailQuery, connection))
+                            {
+                            }
+                        }
+
+                        foreach (var deletedId in p_DeletedIds)
+                        {
+                            string deletePurchaseQuery = "DELETE FROM PurchaseDetail WHERE Id = @Id";
+                            using (SqlCommand deletePurchaseDetailCommand = new SqlCommand(deletePurchaseQuery, connection))
+                            {
+                                deletePurchaseDetailCommand.Parameters.AddWithValue("@Id", deletedId);
+                                deletePurchaseDetailCommand.ExecuteNonQuery();
                             }
                         }
 
@@ -309,14 +336,15 @@ namespace MyShop.Models
                     {
                         MessageBox.Show("An error occurred while updating the Purchase: " + ex.Message);
                     }
+        
                 }
             }
         }
 
 
-        public void Delete(int PurchaseId)
+        public void Delete()
         {
-            if (PurchaseId <= 0)
+            if (Id <= 0)
             {
                 MessageBox.Show("Invalid PurchaseId. Please select a valid Purchase.");
                 return;
@@ -327,42 +355,18 @@ namespace MyShop.Models
                 connection.Open();
 
                 // Step 1: Delete PurchaseDetails associated with the Purchase
-                string deletePurchaseDetailsQuery = "DELETE FROM PurchaseDetail WHERE PurchaseId = @PurchaseId";
-                using (SqlCommand deletePurchaseDetailsCommand = new SqlCommand(deletePurchaseDetailsQuery, connection))
+                string deletePurchaseQuery = "DELETE FROM Purchase WHERE Id = @Id";
+                using (SqlCommand deletePurchaseCommand = new SqlCommand(deletePurchaseQuery, connection))
                 {
-                    deletePurchaseDetailsCommand.Parameters.AddWithValue("@PurchaseId", PurchaseId);
+                    deletePurchaseCommand.Parameters.AddWithValue("@Id", Id);
                     try
                     {
-                        int purchaseDetailsRowsAffected = deletePurchaseDetailsCommand.ExecuteNonQuery();
+                        int purchaseDetailsRowsAffected = deletePurchaseCommand.ExecuteNonQuery();
                     }
                     catch (SqlException ex)
                     {
                         MessageBox.Show("An error occurred while deleting PurchaseDetails: " + ex.Message);
                         return; // Exit if there's an error
-                    }
-                }
-
-
-                string deletePurchaseQuery = "DELETE FROM Purchase WHERE Id = @PurchaseId";
-                using (SqlCommand deletePurchaseCommand = new SqlCommand(deletePurchaseQuery, connection))
-                {
-                    deletePurchaseCommand.Parameters.AddWithValue("@PurchaseId", PurchaseId);
-                    try
-                    {
-                        int purchaseRowsAffected = deletePurchaseCommand.ExecuteNonQuery();
-
-                        if (purchaseRowsAffected > 0)
-                        {
-                            MessageBox.Show("Purchase and associated PurchaseDetails deleted successfully.");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Purchase not found.");
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        MessageBox.Show("An error occurred while deleting the Purchase: " + ex.Message);
                     }
                 }
             }

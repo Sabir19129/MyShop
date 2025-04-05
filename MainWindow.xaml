@@ -4,177 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop"
+         xmlns:viewModels="clr-namespace:MyShop.ViewModels"
+        xmlns:userControls="clr-namespace:MyShop.UserControls"
         WindowState="Maximized"
         mc:Ignorable="d"
         Title="MainWindow" Height="620" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:PurchaseListViewModel}">
+            <userControls:PurchaseListControl />
+        </DataTemplate>
+      
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="*"/>
-
+            <ColumnDefinition Width="*"/>  
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            
-        </Grid.RowDefinitions>
-        <!-- Horizontal Line -->
-        <Rectangle Grid.Row="0" Grid.ColumnSpan="4" Fill="red" Height="3" HorizontalAlignment="Stretch" Margin="0,44,0,0" />
-
-        <!-- Vertical Line -->
         
-        <Border Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="10">
-            <StackPanel>
-                <TextBlock Text="My Shop" FontSize="25" Margin="10,5,10,5" Background="#008b8b" Foreground="White"  />
-            </StackPanel>
-        </Border>
-        <Border Grid.Row="1" Grid.ColumnSpan="1" CornerRadius="10" Grid.RowSpan="3">
+      
+        
+        <Border  CornerRadius="10" >
             
             <StackPanel>
                 <Button Content="User Detail" Click="Button_Click"  FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
                 <Button Content="Supplier Detail" Click="Button_Click_4" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
                 <Button Content="Product Detail" Click="Button_Click_1" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
                 <Button Content="Sale Detail" Click="Button_Click_3" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
-                
-                <Button Content="Purchase Detail" Click="Button_Click_2" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
                 <Button Content="Payment Detail" Click="Button_Click_5" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
             </StackPanel>
             
         </Border>
-    </Grid>
-    <!--<StackPanel>-->
-        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="1">
+       
 
-            --><!-- Heading --><!--
-
-            <TextBlock Text="MY SHOP" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" Grid.Row="0"/>
-
-            <TextBlock Text="PRESENT THE FOLLOWING FACILITIES" FontSize="20" HorizontalAlignment="Center" Margin="10" Grid.Row="1"/>
-            --><!-- Existing Buttons --><!--
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="0,0,0,0">
-                <Button Click="Button_Click" Content="User" Background="DarkSlateBlue" Foreground="White" Grid.Row="2"
-            Width="Auto" Height="150" Margin="10" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" Grid.Row ="1"
-                                    BorderBrush="{TemplateBinding BorderBrush}" 
-                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                    CornerRadius="75" Width="150" Height="150">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button Click="Button_Click_4" Content="Supplier" Background="MidnightBlue" Foreground="White"
-Width="Auto" Height="150" Margin="10" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        CornerRadius="75" Width="150" Height="150">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button Click="Button_Click_1" Content="Product" Background="DarkGreen" Foreground="White" 
-Width="Auto" Height="150" Margin="10" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" Grid.Row ="2"
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        CornerRadius="75" Width="150" Height="150">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="0,0,0,0">
-                <Button Click="Button_Click_3" Content="Sales" Background="RosyBrown" Foreground="White"
-      Width="Auto" Height="150" Margin="10" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" 
-                              BorderBrush="{TemplateBinding BorderBrush}" 
-                              BorderThickness="{TemplateBinding BorderThickness}" 
-                              CornerRadius="75" Width="150" Height="150">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button Click="Button_Click_5" Content="Payment" Background="IndianRed" Foreground="White"
-Width="Auto" Height="150" Margin="10" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        CornerRadius="75" Width="150" Height="150">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="0,0,0,0">
-                <Button Click="Button_Click_2" Content="Purchase Detail" Background="Sienna" Foreground="White"
-Width="Auto" Height="150" Margin="10" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        CornerRadius="75" Width="150" Height="150">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-            </StackPanel>
-        </StackPanel>
-    </StackPanel>-->
+        <TabControl Grid.Column="1" ItemsSource="{Binding TabViewModels}"  SelectedIndex="0" >
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding TabHeading}" 
+                       FontSize="14" 
+                       Foreground="Black" 
+                       FontWeight="Bold" Margin="5" Cursor="Hand"/> 
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <!--<TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </TabControl.ItemContainerStyle>-->
+        </TabControl>
+    </Grid> 
+    
 
 </Window>

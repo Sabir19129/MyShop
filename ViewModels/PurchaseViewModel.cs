@@ -10,10 +10,11 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    internal class PurchaseViewModel : BindableBase
+    internal class PurchaseViewModel : TabViewModel
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
-        #region Const
+        #region Constructor
+
         public PurchaseViewModel()
         {
             Purchase = new Purchase();
@@ -25,9 +26,15 @@ namespace MyShop.ViewModels
             Payments = Payment.FetchPayments();
             PurchaseDetail = new PurchaseDetail();
             //Purchases = Purchase.FetchPurchases();
+
+           
         }
+
         #endregion
+
         #region Properties
+
+        private List<int> DeletedIds { get; set; } = new List<int>();
 
         private Product _selectedProduct;
         public Product SelectedProduct
@@ -42,19 +49,7 @@ namespace MyShop.ViewModels
                 }
             }
         }
-        private Purchase _selectedPurchase;
-        public Purchase SelectedPurchase
-        {
-            get { return _selectedPurchase; }
-            set
-            {
-                if (_selectedPurchase != value)
-                {
-                    _selectedPurchase = value;
-                    OnPropertyChanged(nameof(SelectedPurchase));
-                }
-            }
-        }
+       
 
 
 
@@ -80,6 +75,7 @@ namespace MyShop.ViewModels
         {
             Purchase.TotalPrice = Purchase.PurchaseDetails.Sum(x=> x.TotalPrice);
         }
+
 
         //private List<Purchase> _purchaselist;
         //public List<Purchase> purchaselist
@@ -157,7 +153,7 @@ namespace MyShop.ViewModels
         {
             IsEditMode = false; // For new purchases (Save button visible)
         }
-
+        
         public void StartEditingPurchase()
         {
             IsEditMode = true; // For editing purchases (Update button visible)
@@ -222,6 +218,7 @@ namespace MyShop.ViewModels
         }
 
         #endregion
+
         #region ICmd Members
         // SaveCommand to get Purchases
         private RelayCommand _SaveCommand;
@@ -252,7 +249,7 @@ namespace MyShop.ViewModels
             }
             else//Purchase needs to be updated
             {
-                Purchase.Update();//Update purchase
+                Purchase.Update(DeletedIds);//Update purchase
             }
 
             Purchase = new Purchase();  // Reset after save
@@ -261,34 +258,8 @@ namespace MyShop.ViewModels
             // After saving, reset IsEditMode for creating mode
             IsEditMode = false;  // Hide the Save button after saving
         }  
-        private RelayCommand _UpdateCommand;
-        public ICommand UpdateCommand
-        {
-            get
-            {
-                if (_UpdateCommand == null)
-                {
-                    _UpdateCommand = new RelayCommand(p => ExecuteUpdateCommand());
-                }
-                return _UpdateCommand;
-            }
-        }
-
-        private void ExecuteUpdateCommand()
-        {
-            // Check if required fields are filled
-            if (SelectedPurchase ==null)
-            {
-                MessageBox.Show("Please select a product to update.");
-                return;
-            }
-            Purchase = SelectedPurchase;
-
-
-          
-
-          
-        }
+        
+         
         private RelayCommand _AddDetailCommand;
         public ICommand AddDetailCommand
         {
@@ -323,24 +294,12 @@ namespace MyShop.ViewModels
                                                    // Reset for the next entry
         }
 
-         
+        
+        
+
+
 
         // DeleteCommand to delete a Purchase
-        private RelayCommand _deleteCommand;
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                if (_deleteCommand == null)
-                {
-                    _deleteCommand = new RelayCommand(p => ExecuteDeleteCommand(p));
-                }
-                return _deleteCommand;
-            }
-        }
-
-
-        // DeletePurchaseDetailCommand to delete a Purchase
         private RelayCommand _DeletePurchaseDetailCommand;
         public ICommand DeletePurchaseDetailCommand
         {
@@ -356,38 +315,30 @@ namespace MyShop.ViewModels
 
         private void ExecuteDeletePurchaseDetailCommand(object p)
         {
-            var purchase = p as PurchaseDetail;
-            if (purchase == null || purchase.Product == null || purchase.Id <= 0)
-            {
-                MessageBox.Show("Please select a valid PurchaseDetail to delete.");
-                return;
-            }
+           // if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.TotalPrice ==0 || PurchaseDetail.Quantity <= 0 
+             //   || PurchaseDetail.Price <= 0)
+            //{
+            //    MessageBox.Show("Please select a Purchase to delete.");
+            //    return;
+            //}
 
-            var result = MessageBox.Show($"This will delete {purchase.Product.Id} permanently. Do you want to proceed?",
+            var purchaseDetail = p as PurchaseDetail;
+            if (purchaseDetail == null) return;
+
+            var result = MessageBox.Show($"This will delete {purchaseDetail.Product.Id} permanently. Do you want to proceed?",
                                           "Confirm Delete",
                                           MessageBoxButton.YesNo,
                                           MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
-                Purchase.DeletePurchaseDetail(purchase.Id);
-                Purchase.PurchaseDetails.Remove(purchase);
+                DeletedIds.Add(purchaseDetail.Id);
 
-              }
+                Purchase.PurchaseDetails.Remove(purchaseDetail);
+                //Purchases = Purchase.FetchPurchases(); // Refresh Purchases
+                //Purchase = new Purchase(); // Reset Purchase
+            }
         }
-
-
-
-
-        private void ExecuteDeleteCommand(object p)
-        {
-            // Check if required fields are filled
-           
-
-
-        }
-
-
 
         // FetchCommand to get Purchases
         private RelayCommand _FetchCommand;

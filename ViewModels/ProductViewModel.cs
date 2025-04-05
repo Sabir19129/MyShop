@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    internal class ProductViewModel : BindableBase
+    internal class ProductViewModel : TabViewModel
     {
         #region Property
         #region Const

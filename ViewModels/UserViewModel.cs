@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    internal class UserViewModel : BindableBase
+    internal class UserViewModel : TabViewModel
     {
         #region Properties
         public UserViewModel()

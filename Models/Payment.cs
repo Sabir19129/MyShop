@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace MyShop.Models
 {
-    internal class Payment : BindableBase, IEquatable<Payment>
+    public class Payment : BindableBase, IEquatable<Payment>
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
         #region Properties
