@@ -35,9 +35,9 @@ Margin="5,10,5,10">
 Foreground="White" Height="25" Margin="3" HorizontalAlignment="Left" />
                     <Button Content="Update" Style="{StaticResource BaseButtonStyle}" Command="{Binding UpdateCommand}" Width="60" Background="#97BDEF" 
             Foreground="Black" Height="25" Margin="2" HorizontalAlignment="Left" />
-                    <Button Content="Fetch" Style="{StaticResource BaseButtonStyle}" Command="{Binding FetchCommand}" Width="50" Background="#EEADAD" 
+                    <Button Content="Fetch" Style="{StaticResource BaseButtonStyle}" Command="{Binding SaleFetchCommand}" Width="50" Background="#EEADAD" 
             Foreground="Black" Height="25" Margin="2" HorizontalAlignment="Left" />
-                    <Button Content="Delete" Style="{StaticResource BaseButtonStyle}" Command="{Binding DeleteCommand}" Width="55" Background="#a52a2a" 
+                    <Button Content="Delete" Style="{StaticResource BaseButtonStyle}" Command="{Binding DeleteSaleCommand}" Width="55" Background="#a52a2a" 
             Foreground="White" Height="25" Margin="2" HorizontalAlignment="Left" />
                 </StackPanel>
             </Grid>

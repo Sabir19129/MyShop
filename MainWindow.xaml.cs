@@ -46,10 +46,10 @@ namespace MyShop
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             // Make sure to instantiate the PurchaseView and ViewModel
-            SalesView SalesView = new SalesView();
-            SalesViewModel SalesViewModel = new SalesViewModel();
-            SalesView.DataContext = SalesViewModel; // Set DataContext for data binding
-            SalesView.ShowDialog(); // Open PurchaseView as a dialog
+            SaleView SaleView = new SaleView();
+            SaleViewModel SaleViewModel = new SaleViewModel();
+            SaleView.DataContext = SaleViewModel; // Set DataContext for data binding
+            SaleView.ShowDialog(); // Open PurchaseView as a dialog
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)

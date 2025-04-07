@@ -17,9 +17,9 @@ namespace MyShop.Views
     /// <summary>
     /// Interaction logic for SalesView.xaml
     /// </summary>
-    public partial class SalesView : Window
+    public partial class SaleView : Window
     {
-        public SalesView()
+        public SaleView()
         {
             InitializeComponent();
         }

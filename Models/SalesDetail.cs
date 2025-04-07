@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace MyShop.Models
 {
-    internal class SalesDetail : BindableBase
+    public class SaleDetail : BindableBase
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
         public event EventHandler QuantityChanged;
@@ -42,16 +42,16 @@ namespace MyShop.Models
             }
         }
 
-        private int _TotalSales;
-        public int TotalSales
+        private int _TotalSale;
+        public int TotalSale
         {
-            get { return _TotalSales; }
+            get { return _TotalSale; }
             set
             {
-                if (_TotalSales != value)
+                if (_TotalSale != value)
                 {
-                    _TotalSales = value;
-                    OnPropertyChanged(nameof(TotalSales));
+                    _TotalSale = value;
+                    OnPropertyChanged(nameof(TotalSale));
                     //CalculateTotalSale();
                 }
             }

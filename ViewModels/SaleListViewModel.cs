@@ -1,5 +1,6 @@
 ﻿using MyShop.Common;
 using MyShop.Models;
+using MyShop.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,32 +11,104 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    public class SalesListViewModel : TabViewModel
+    public class SaleListViewModel : TabViewModel
     {
-        public SalesListViewModel()
+        public SaleListViewModel()
         {
-            new ObservableCollection<Sales>(Sales.FetchSales());
-            TabHeading = "Sales List";
+            Sales = Sale.FetchSales();
+            TabHeading = "Sale List";
+            SelectedSale = new Sale();
         }
         #region Property   
 
-        private Sales _SelectedSales;
-        public Sales SelectedSales
+        private Sale _SelectedSale;
+        public Sale SelectedSale
         {
-            get { return _SelectedSales; }
+            get { return _SelectedSale; }
             set
             {
-                if (_SelectedSales != value)
+                if (_SelectedSale != value)
                 {
-                    _SelectedSales = value;
-                    OnPropertyChanged(nameof(SelectedSales));
+                    _SelectedSale = value;
+                    OnPropertyChanged(nameof(SelectedSale));
+                }
+            }
+        }
+        private List<Sale> _Sales;
+        public List<Sale> Sales
+        {
+            get { return _Sales; }
+            set
+            {
+                if (_Sales != value)
+                {
+                    _Sales = value;
+                    OnPropertyChanged(nameof(Sales));
                 }
             }
         }
         #endregion
         #region Command
+        private RelayCommand _AddCommand;
+        public ICommand AddCommand
+        {
+            get
+            {
+                if (_AddCommand == null)
+                {
+                    _AddCommand = new RelayCommand(p => ExecuteAddCommand());
+                }
+                return _AddCommand;
+            }
+        }
+        private void ExecuteAddCommand()
+        {
+            SaleView SaleView = new SaleView();
+            SaleViewModel SaleViewModel = new SaleViewModel();
+            SaleView.DataContext = SaleViewModel;
+            SaleView.ShowDialog();
+            // Reset for the next entry
+        }
+        private RelayCommand _DeleteSaleCommand;
+        public ICommand DeleteSaleCommand
+        {
+            get
+            {
+                if (_DeleteSaleCommand == null)
+                {
+                    _DeleteSaleCommand = new RelayCommand(p => ExecuteDeleteSaleCommand(p));
+                }
+                return _DeleteSaleCommand;
+            }
+        }
 
-        RelayCommand _UpdateCommand;
+        private void ExecuteDeleteSaleCommand(object p)
+        {
+            SelectedSale.Delete(SelectedSale.Id);
+            Sales = Sale.FetchSales();
+
+        }
+        private RelayCommand _SaleFetchCommand;
+        public ICommand SaleFetchCommand
+        {
+            get
+            {
+                if (_SaleFetchCommand == null)
+                {
+                    _SaleFetchCommand = new RelayCommand(p => ExecuteSaleFetchCommand());
+                }
+                return _SaleFetchCommand;
+            }
+        }
+
+        private void ExecuteSaleFetchCommand()
+        {
+            Sales = Sale.FetchSales();
+            //Purchases = Purchase.FetchPurchaseDetails();// Fetch the list of purchases
+        }
+
+
+        private RelayCommand _UpdateCommand;
         public ICommand UpdateCommand
         {
             get
@@ -50,53 +123,18 @@ namespace MyShop.ViewModels
 
         private void ExecuteUpdateCommand()
         {
-            // Sales.Update(); // Update the Sales
-            SelectedSales = new Sales(); // Reset the Sales object 
-        }
-
-        RelayCommand _DeleteCommand;
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                if (_DeleteCommand == null)
-                {
-                    _DeleteCommand = new RelayCommand(p => ExecuteDeleteCommand());
-                }
-                return _DeleteCommand;
-            }
-        }
-
-        private void ExecuteDeleteCommand()
-        {
-            SalesList.Remove(Sales); // Remove the selected Sale 
-        }
-
-        RelayCommand _FetchCommand;
-        public ICommand FetchCommand
-        {
-            get
-            {
-                if (_FetchCommand == null)
-                {
-                    _FetchCommand = new RelayCommand(p => ExecuteFetchCommand());
-                }
-                return _FetchCommand;
-            }
+            SaleView SaleView = new SaleView();
+            SaleViewModel SaleViewModel = new SaleViewModel();
+            SaleView.DataContext = SaleViewModel;
+            SaleViewModel.Sale = SelectedSale;
+            SaleView.ShowDialog();
+            Sales = Sale.FetchSales();
         }
 
 
-        private void ExecuteFetchCommand()
-        {
-            var fetchedSales = Sales.FetchSales(); // Fetch sales from the database
-            SalesList.Clear(); // Clear the existing list
-            foreach (var sale in fetchedSales)
-            {
-                SalesList.Add((Sales)sale); // Add each fetched sale to the SalesList
-            }
-        }
     }
 }
 
 
-        #endregion
+
+#endregion

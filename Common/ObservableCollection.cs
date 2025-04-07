@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace MyShop.ViewModels
 {
-    internal class ObservableCollection : ObservableCollection<Sales>
+    internal class ObservableCollection : ObservableCollection<Sale>
     {
         public ObservableCollection()
         {

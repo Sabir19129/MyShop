@@ -9,25 +9,32 @@ using System.Windows.Input;
 namespace MyShop.ViewModels
 {
 
-    internal class SalesViewModel : TabViewModel
+    internal class SaleViewModel : TabViewModel
 
     {
         #region Property    
-        public SalesViewModel()
+        public SaleViewModel()
         {
-            Sales = new Sales();
-            SalesList = new ObservableCollection();
+            Sale = new Sale();
+            Sales = new List<Sale>();
             Products = new Product().FetchProducts();
 
-            PaymentMethods = new ObservableCollection<string>
-            {
-            "Cash",
-            "Card",
-            "Online",
-            "UPI",
-            "Cheque"
-            };
+            PaymentMethods = new ObservableCollection<string>();
 
+        }
+        private List<Sale> _sales;
+        public List<Sale> Sales
+        {
+            get => _sales;
+            set
+            {
+                if (_sales != value)
+                {
+                    _sales = value;
+                    OnPropertyChanged(nameof(Sales));
+                
+                }
+            }
         }
 
 
@@ -98,30 +105,30 @@ namespace MyShop.ViewModels
             }
         }
 
-        private Sales _Sales;
-        public Sales Sales
+        private Sale _Sale;
+        public Sale Sale
         {
-            get { return _Sales; }
+            get { return _Sale; }
             set
             {
-                if (_Sales != value)
+                if (_Sale != value)
                 {
-                    _Sales = value;
-                    OnPropertyChanged(nameof(Sales));
+                    _Sale = value;
+                    OnPropertyChanged(nameof(Sale));
                 }
             }
         }
 
-        private ObservableCollection<Sales> _SalesList;
-        public ObservableCollection<Sales> SalesList
+        private ObservableCollection<Sale> _SaleList;
+        public ObservableCollection<Sale> SaleList
         {
-            get { return _SalesList; }
+            get { return _SaleList; }
             set
             {
-                if (_SalesList != value)
+                if (_SaleList != value)
                 {
-                    _SalesList = value;
-                    OnPropertyChanged(nameof(SalesList));
+                    _SaleList = value;
+                    OnPropertyChanged(nameof(SaleList));
                 }
             }
         }
@@ -162,8 +169,8 @@ namespace MyShop.ViewModels
 
         private void ExecuteSaveCommand()
         {
-            Sales.Insert(); // Insert the Sales
-            Sales = new Sales(); // Reset the Sales object 
+            Sale.Insert(); // Insert the Sales
+            Sale = new Sale(); // Reset the Sales object 
         }
 
         RelayCommand _UpdateCommand;
@@ -182,7 +189,7 @@ namespace MyShop.ViewModels
         private void ExecuteUpdateCommand()
         {
            // Sales.Update(); // Update the Sales
-            Sales = new Sales(); // Reset the Sales object 
+            Sale = new Sale(); // Reset the Sales object 
         }
 
         RelayCommand _DeleteCommand;
@@ -200,7 +207,7 @@ namespace MyShop.ViewModels
 
         private void ExecuteDeleteCommand()
         {
-            SalesList.Remove(Sales); // Remove the selected Sale 
+            SaleList.Remove(Sale); // Remove the selected Sale 
         }
 
         RelayCommand _FetchCommand;
@@ -218,11 +225,11 @@ namespace MyShop.ViewModels
 
         private void ExecuteFetchCommand()
         {
-            var fetchedSales = Sales.FetchSales(); // Fetch sales from the database
-            SalesList.Clear(); // Clear the existing list
+            var fetchedSales = Sale.FetchSales(); // Fetch sales from the database
+            SaleList.Clear(); // Clear the existing list
             foreach (var sale in fetchedSales)
             {
-                SalesList.Add((Sales)sale); // Add each fetched sale to the SalesList
+                SaleList.Add((Sale)sale); // Add each fetched sale to the SalesList
             }
         }
 

@@ -7,25 +7,25 @@ using System.Windows;
 
 namespace MyShop.Models
 {
-    internal class Sales : BindableBase
+    public class Sale : BindableBase
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
 
         #region Properties
-        public Sales()
+        public Sale()
         {
-            SalesDetails = new ObservableCollection<SalesDetail>();
+            SaleDetails = new ObservableCollection<SaleDetail>();
         }
-        private ObservableCollection<SalesDetail> _SalesDetails;
-        public ObservableCollection<SalesDetail> SalesDetails
+        private ObservableCollection<SaleDetail> _SaleDetails;
+        public ObservableCollection<SaleDetail> SaleDetails
         {
-            get { return _SalesDetails; }
+            get { return _SaleDetails; }
             set
             {
-                if (_SalesDetails != value)
+                if (_SaleDetails != value)
                 {
-                    _SalesDetails = value;
-                    OnPropertyChanged(nameof(SalesDetails));
+                    _SaleDetails = value;
+                    OnPropertyChanged(nameof(SaleDetails));
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace MyShop.Models
         public void Insert()
 
         {
-            string query = "INSERT INTO Sales (Quantity, Payment, TotalPrice, SaleDate, Price) " +
+            string query = "INSERT INTO Sale (Quantity, Payment, TotalPrice, SaleDate, Price) " +
                            "VALUES (@ProductId, @Quantity, @Payment, @TotalPrice, @SaleDate, @Price)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -127,21 +127,21 @@ namespace MyShop.Models
 
                         if (newId != null)
                         {
-                            foreach (var SalesDetail in SalesDetails)
+                            foreach (var SaleDetail in SaleDetails)
                             {
-                                string queryDetail = "INSERT INTO PurchaseDetail (SalesId, ProductId, Quantity, Price) VALUES (@PurchaseId, @ProductId, @Quantity, @Price)";
+                                string queryDetail = "INSERT INTO SaleDetail (SaleId, ProductId, Quantity, Price) VALUES (@PurchaseId, @ProductId, @Quantity, @Price)";
                                 using (SqlCommand command1 = new SqlCommand(queryDetail, connection))
                                 {
-                                    command1.Parameters.AddWithValue("@SalesId", newId);
-                                    command1.Parameters.AddWithValue("@ProductId", SalesDetail.Product.Id);
-                                    command1.Parameters.AddWithValue("@TotalSales", SalesDetail.TotalSales);
+                                    command1.Parameters.AddWithValue("@SaleId", newId);
+                                    command1.Parameters.AddWithValue("@ProductId", SaleDetail.Product.Id);
+                                    command1.Parameters.AddWithValue("@TotalSales", SaleDetail.TotalSale);
                                     command1.Parameters.AddWithValue("@Price", Price);
                                     // command1.Parameters.AddWithValue("@TotalPrice", purchaseDetail.Quantity*purchaseDetail.Price);
                                     command1.ExecuteNonQuery();
                                 }
-                                Product.UpdateStock(SalesDetail.Product.Id, Quantity); // Update stock
+                                Product.UpdateStock(SaleDetail.Product.Id, Quantity); // Update stock
                             }
-                            MessageBox.Show("Sales inserted successfully.");
+                            MessageBox.Show("Sale inserted successfully.");
                         }
                     }
                     catch (SqlException ex)
@@ -231,7 +231,7 @@ namespace MyShop.Models
             }
         }
 
-        public static List<Sales> FetchSales()
+        public static List<Sale> FetchSales()
         {
             string query = @"SELECT s.Id AS SalesId, p.Id AS ProductId, p.Name AS ProductName,
                     s.Quantity, s.Price, sd.TotalPrice, s.SaleDate,
@@ -240,8 +240,7 @@ namespace MyShop.Models
                     INNER JOIN Product p ON p.Id = s.ProductId
                     INNER JOIN Payment pm ON pm.Id = s.PaymentId";
 
-            List<Sales> salesList = new List<Sales>();
-
+            List<Sale> sales = new List<Sale>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -253,7 +252,7 @@ namespace MyShop.Models
                         {
                             while (reader.Read())
                             {
-                                var Sales = new Sales()
+                                var Sale = new Sale()
                                 {
                                     Quantity = Convert.ToInt32(reader["Quantity"]),
                                     Price = Convert.ToInt32(reader["Price"]),
@@ -271,11 +270,11 @@ namespace MyShop.Models
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show("Error fetching sales: " + ex.Message);
+                        MessageBox.Show("Error fetching sale: " + ex.Message);
                     }
                 }
             }
-            return salesList;
+            return sales;
         }
         #endregion
     }

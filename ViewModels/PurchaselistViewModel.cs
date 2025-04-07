@@ -1,6 +1,7 @@
 ﻿using MyShop.Common;
 using MyShop.Models;
 using MyShop.ViewModels;
+using MyShop.Views;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -29,19 +30,7 @@ namespace MyShop.ViewModels
                 }
             }
         }
-        private PurchaseDetail _PurchaseDetail = new PurchaseDetail();
-        public PurchaseDetail PurchaseDetail
-        {
-            get { return _PurchaseDetail; }
-            set
-            {
-                if (_PurchaseDetail != value)
-                {
-                    _PurchaseDetail = value;
-                    OnPropertyChanged(nameof(PurchaseDetail));
-                }
-            }
-        }
+     
 
         private List<Purchase> _purchases;
         public List<Purchase> Purchases
@@ -56,79 +45,46 @@ namespace MyShop.ViewModels
                 }
             }
         }
-        private List<int> DeletedIds { get; set; } = new List<int>();
+       
 
-        private RelayCommand _AddDetailCommand;
-        public ICommand AddDetailCommand
+        private RelayCommand _AddCommand;
+        public ICommand AddCommand
         {
             get
             {
-                if (_AddDetailCommand == null)
+                if (_AddCommand == null)
                 {
-                    _AddDetailCommand = new RelayCommand(p => ExecuteAddDetailCommand());
+                    _AddCommand = new RelayCommand(p => ExecuteAddCommand());
                 }
-                return _AddDetailCommand;
+                return _AddCommand;
             }
         }
-        private void ExecuteAddDetailCommand()
+        private void ExecuteAddCommand()
         {
-            if (PurchaseDetail.Product == null || PurchaseDetail.Quantity <= 0 || PurchaseDetail.Price <= 0)
-            {
-                MessageBox.Show("Please fill in all required fields.");
-                return;
-            }
-
-            SelectedPurchase.PurchaseDetails.Add(new PurchaseDetail
-            {
-                Product = PurchaseDetail.Product,
-                Quantity = PurchaseDetail.Quantity,
-                Price = PurchaseDetail.Price,
-                TotalPrice = PurchaseDetail.TotalPrice,
-
-            });
-            OnPropertyChanged(nameof(PurchaseDetail)); // Notify UI
-
-            PurchaseDetail = new PurchaseDetail(); // Reset for new entry
-                                                   // Reset for the next entry
+            PurchaseView PurchaseView = new PurchaseView();
+            PurchaseViewModel PurchaseViewModel = new PurchaseViewModel();
+            PurchaseView.DataContext = PurchaseViewModel;
+            PurchaseView.ShowDialog();
+            // Reset for the next entry
         }
-        private RelayCommand _DeletePurchaseDetailCommand;
-        public ICommand DeletePurchaseDetailCommand
+        private RelayCommand _DeletePurchaseCommand;
+        public ICommand DeletePurchaseCommand
         {
             get
             {
-                if (_DeletePurchaseDetailCommand == null)
+                if (_DeletePurchaseCommand == null)
                 {
-                    _DeletePurchaseDetailCommand = new RelayCommand(p => ExecuteDeletePurchaseDetailCommand(p));
+                    _DeletePurchaseCommand = new RelayCommand(p => ExecuteDeletePurchaseCommand(p));
                 }
-                return _DeletePurchaseDetailCommand;
+                return _DeletePurchaseCommand;
             }
         }
 
-        private void ExecuteDeletePurchaseDetailCommand(object p)
+        private void ExecuteDeletePurchaseCommand(object p)
         {
-            // if (PurchaseDetail.Product == null || PurchaseDetail.Product.Id == 0 || PurchaseDetail.TotalPrice ==0 || PurchaseDetail.Quantity <= 0 
-            //   || PurchaseDetail.Price <= 0)
-            //{
-            //    MessageBox.Show("Please select a Purchase to delete.");
-            //    return;
-            //}
+            SelectedPurchase.Delete();
+            Purchases = Purchase.FetchPurchases();
 
-            var purchaseDetail = p as PurchaseDetail;
-            if (purchaseDetail == null) return;
-
-            var result = MessageBox.Show($"This will delete {purchaseDetail.Product.Id} permanently. Do you want to proceed?",
-                                          "Confirm Delete",
-                                          MessageBoxButton.YesNo,
-                                          MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                DeletedIds.Add(purchaseDetail.Id);
-
-                SelectedPurchase.PurchaseDetails.Remove(purchaseDetail);
-                //Purchases = Purchase.FetchPurchases(); // Refresh Purchases
-                //Purchase = new Purchase(); // Reset Purchase
-            }
         }
         private RelayCommand _FetchCommand;
         public ICommand FetchCommand
@@ -163,9 +119,12 @@ namespace MyShop.ViewModels
 
         private void ExecuteUpdateCommand()
         {
-            //PurchaseDetail.Update();
+            PurchaseView PurchaseView = new PurchaseView();
+            PurchaseViewModel PurchaseViewModel = new PurchaseViewModel();
+            PurchaseView.DataContext = PurchaseViewModel;
+            PurchaseViewModel.Purchase = SelectedPurchase;
+            PurchaseView.ShowDialog();
             Purchases = Purchase.FetchPurchases();
-            //Purchases = Purchase.FetchPurchaseDetails();// Fetch the list of purchases
         }
 
 

@@ -19,7 +19,7 @@ namespace MyShop.ViewModels
         {
             TabViewModels = new ObservableCollection<TabViewModel>();
             TabViewModels.Add(new PurchaseListViewModel()) ;
-           TabViewModels.Add(new SalesListViewModel());
+           TabViewModels.Add(new SaleListViewModel());
 
 
         }
@@ -72,19 +72,19 @@ namespace MyShop.ViewModels
 
             // Products = Product.FetchProducts();
         }
-        private RelayCommand _SalesCommand;
-        public ICommand SalesCommand
+        private RelayCommand _SaleCommand;
+        public ICommand SaleCommand
         {
             get
             {
-                if (_SalesCommand == null)
+                if (_SaleCommand == null)
                 {
-                    _SalesCommand = new RelayCommand(p => ExecuteSalesCommand());
+                    _SaleCommand = new RelayCommand(p => ExecuteSaleCommand());
                 }
                 return _ProductCommand;
             }
         }
-        private void ExecuteSalesCommand()
+        private void ExecuteSaleCommand()
         {
            
         }
