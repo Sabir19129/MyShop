@@ -11,19 +11,19 @@ using System.Xml.Linq;
 
 namespace MyShop.Models
 {
-    public class User : BindableBase
+    public class Customer : BindableBase
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
         #region Properties
-        private int _ProductId;
+        private int _Id;
         public int Id
         {
-            get { return _ProductId; }
+            get { return _Id; }
             set
             {
-                if (_ProductId != value)
+                if (_Id != value)
                 {
-                    _ProductId = value;
+                    _Id = value;
                     OnPropertyChanged(nameof(Id));
                 }
             }
@@ -46,8 +46,8 @@ namespace MyShop.Models
         #region Functions
         public void Insert()
         {
-            // Check if the User with the same ID already exists
-            string checkQuery = "SELECT COUNT(1) FROM Users WHERE Id = @Id";
+            // Check if the Customer with the same ID already exists
+            string checkQuery = "SELECT COUNT(1) FROM Customer WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -62,48 +62,48 @@ namespace MyShop.Models
 
                         if (count > 0)
                         {
-                            MessageBox.Show("A user with the same ID already exists. Please enter a unique ID.");
+                            MessageBox.Show("A Customer with the same ID already exists. Please enter a unique ID.");
                             return;
                         }
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show("An error occurred while checking for duplicate user: " + ex.Message);
+                        MessageBox.Show("An error occurred while checking for duplicate Customer: " + ex.Message);
                         return;
                     }
                 }
 
-                // Insert the new User if no duplicate is found
-                string query = "INSERT INTO Users ( Name) VALUES (@Name)";
+                // Insert the new Customer if no duplicate is found
+                string query = "INSERT INTO Customer ( Name) VALUES (@Name)";
                 using (SqlCommand command = new SqlCommand(query, connection))
-                { 
+                {
                     command.Parameters.AddWithValue("@Name", Name);
 
                     try
                     {
-                      
+
                         command.ExecuteNonQuery();
-                        MessageBox.Show("User inserted successfully.");
+                        MessageBox.Show("Customer inserted successfully.");
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show("An error occurred while inserting the user: " + ex.Message);
-                    }                 
+                        MessageBox.Show("An error occurred while inserting the Customer: " + ex.Message);
+                    }
                 }
             }
         }
 
-        // Method to update an existing user
+        // Method to update an existing Customer
         public void Update()
         {
             // Ensure that ID is not empty or invalid
             if (Id == 0)
             {
-                MessageBox.Show("Please select a User to update.");
+                MessageBox.Show("Please select a Customer to update.");
                 return;
             }
 
-            string query = "UPDATE Users SET Name = @Name WHERE Id = @Id";
+            string query = "UPDATE Customer SET Name = @Name WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -116,7 +116,7 @@ namespace MyShop.Models
                     {
                         connection.Open();
                         command.ExecuteNonQuery();
-                        MessageBox.Show("User updated successfully.");
+                        MessageBox.Show("Customer updated successfully.");
                     }
                     catch (SqlException ex)
                     {
@@ -126,17 +126,17 @@ namespace MyShop.Models
             }
         }
 
-        // Method to delete a user
+        // Method to delete a Customer
         public void Delete(int id)
         {
             // Ensure the ID is valid before attempting to delete
             if (id <= 0)
             {
-                MessageBox.Show("Invalid ID. Please select a valid user.");
+                MessageBox.Show("Invalid ID. Please select a valid Customer.");
                 return;
             }
 
-            string query = "DELETE FROM Users WHERE Id = @Id";
+            string query = "DELETE FROM Customer WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -151,26 +151,26 @@ namespace MyShop.Models
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("User deleted successfully.");
+                            MessageBox.Show("Customer deleted successfully.");
                         }
                         else
                         {
-                            MessageBox.Show("User not found.");
+                            MessageBox.Show("Customer not found.");
                         }
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show("An error occurred while deleting the user: " + ex.Message);
+                        MessageBox.Show("An error occurred while deleting the Customer: " + ex.Message);
                     }
                 }
             }
         }
 
-        // Method to fetch all users
-        public static List<User> FetchUsers()
+        // Method to fetch all Customer
+        public static List<Customer> FetchCustomer()
         {
-            string query = "SELECT Id, Name FROM Users";
-            List<User> users = new List<User>();
+            string query = "SELECT Id, Name FROM Customer";
+            List<Customer> Customer = new List<Customer>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -183,7 +183,7 @@ namespace MyShop.Models
                         {
                             while (reader.Read())
                             {
-                                users.Add(new User()
+                                Customer.Add(new Customer()
                                 {
                                     Id = (int)reader["Id"],
                                     Name = reader["Name"].ToString()
@@ -193,20 +193,20 @@ namespace MyShop.Models
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show("An error occurred while fetching users: " + ex.Message);
+                        MessageBox.Show("An error occurred while fetching Customer: " + ex.Message);
                     }
                 }
             }
 
-            return users;
+            return Customer;
         }
 
         // Override ToString method for better display in UI
         public override string ToString()
         {
-            return Name; // This will show the name when displaying a User object
+            return Name; // This will show the name when displaying a Customer object
         }
         #endregion
-      
+
     }
 }

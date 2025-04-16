@@ -1,6 +1,7 @@
 ﻿using MyShop.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace MyShop.Models
                 }
             }
         }
+
         private Product _Product;
         public Product Product
         {
@@ -41,6 +43,39 @@ namespace MyShop.Models
                 }
             }
         }
+        private int _Price; // Changed to decimal as price typically has decimal values
+        public int Price
+        {
+            get { return _Price; }
+            set
+            {
+                if (_Price != value)
+                {
+                    _Price = value;
+                    OnPropertyChanged(nameof(Price));
+                    CalculateTotalPrice();
+                }
+            }
+        }
+        public void CalculateTotalPrice()
+        {
+            TotalPrice = Quantity * Price;
+        }
+        private int _Quantity;
+        public int Quantity
+        {
+            get { return _Quantity; }
+            set
+            {
+                if (_Quantity != value)
+                {
+                    _Quantity = value;
+                    OnPropertyChanged(nameof(Quantity));
+                    CalculateTotalPrice();
+                    QuantityChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         private int _TotalSale;
         public int TotalSale
@@ -53,21 +88,6 @@ namespace MyShop.Models
                     _TotalSale = value;
                     OnPropertyChanged(nameof(TotalSale));
                     //CalculateTotalSale();
-                }
-            }
-        }
-
-        private int _Price; // Changed to decimal as price typically has decimal values
-        public int Price
-        {
-            get { return _Price; }
-            set
-            {
-                if (_Price != value)
-                {
-                    _Price = value;
-                    OnPropertyChanged(nameof(Price));
-                   
                 }
             }
         }

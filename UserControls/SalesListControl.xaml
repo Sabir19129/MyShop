@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MyShop.UserControls.SalesListControl"
+﻿<UserControl x:Class="MyShop.UserControls.SaleListControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -19,12 +19,13 @@ Margin="5,10,5,10">
 
                 <!-- DataGrid -->
                 <DataGrid Grid.Row="0" CanUserAddRows="False" Margin="5" Background="Transparent" AutoGenerateColumns="False" BorderThickness="0"  
-          ItemsSource="{Binding Purchases}" SelectedItem="{Binding SelectedPurchase}">
+          ItemsSource="{Binding Sales}" SelectedItem="{Binding SelectedSale}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="SalesDate" Binding="{Binding CreationDate, StringFormat='{}{0:dd/MM/yyyy}'}" 
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" FontWeight="Bold" Width="*" />
+                        <DataGridTextColumn Header="SalesDate" Binding="{Binding SaleDate, StringFormat='{}{0:dd/MM/yyyy}'}" 
                             FontWeight="Bold" Width="*" />
-                        <DataGridTextColumn Header="User/Buyer" Binding="{Binding Supplier.Name}" FontWeight="Bold" Width="*" />
-                        <DataGridTextColumn Header="Payment" Binding="{Binding Payment.Name}" FontWeight="Bold" Width="*" />
+                        <DataGridTextColumn Header="User" Binding="{Binding User.Id}" FontWeight="Bold" Width="*" />
+                        <DataGridTextColumn Header="Payment" Binding="{Binding Payment.Id}" FontWeight="Bold" Width="*" />
                         <DataGridTextColumn Header="Total Price" Binding="{Binding TotalPrice}" FontWeight="Bold" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>

@@ -70,5 +70,13 @@ namespace MyShop
             PaymentView.ShowDialog(); // SuppliersView as a dialog
         }
 
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+
+            CustomerView CustomerView = new CustomerView();
+            CustomerViewModel CustomerViewModel = new CustomerViewModel();
+            CustomerView.DataContext = CustomerViewModel;
+            CustomerView.ShowDialog();
+        }
     }
 }

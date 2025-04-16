@@ -413,33 +413,33 @@ namespace MyShop.ViewModels
             {
             }
         }
-        private RelayCommand _PaymentCommand;
-        public ICommand PaymentCommand
-        {
-            get
-            {
-                if (_PaymentCommand == null)
-                {
-                    _PaymentCommand = new RelayCommand(p => ExecutePaymentCommand());
-                }
-                return _PaymentCommand;
-            }
-        }
+        //private RelayCommand _PaymentCommand;
+        //public ICommand PaymentCommand
+        //{
+        //    get
+        //    {
+        //        if (_PaymentCommand == null)
+        //        {
+        //            _PaymentCommand = new RelayCommand(p => ExecutePaymentCommand());
+        //        }
+        //        return _PaymentCommand;
+        //    }
+        //}
 
-        private void ExecutePaymentCommand()
-        {
-            var result = MessageBox.Show("Do you want to confirm your Purchases?",
-                                         "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        //private void ExecutePaymentCommand()
+        //{
+        //    var result = MessageBox.Show("Do you want to confirm your Purchases?",
+        //                                 "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            if (result == MessageBoxResult.Yes)
-            {
-                MessageBox.Show("Please pay the bill");
-                Purchase = new Purchase(); // This will now reflect in the UI
-            }
-            else
-            {
-            }
-        }
+        //    if (result == MessageBoxResult.Yes)
+        //    {
+        //        MessageBox.Show("Please pay the bill");
+        //        Purchase = new Purchase(); // This will now reflect in the UI
+        //    }
+        //    else
+        //    {
+        //    }
+        //}
 
         #endregion
     }

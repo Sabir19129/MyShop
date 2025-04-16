@@ -4,6 +4,7 @@ using MyShop.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MyShop.ViewModels
@@ -18,9 +19,15 @@ namespace MyShop.ViewModels
             Sale = new Sale();
             Sales = new List<Sale>();
             Products = new Product().FetchProducts();
+            SaleDetail = new SaleDetail();
+            Payments = Payment.FetchPayments();
+            Suppliers = Supplier.FetchSuppliers();
+            Users = User.FetchUsers();
 
-            PaymentMethods = new ObservableCollection<string>();
-
+        }
+        private void SaleDetails_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Sale.TotalPrice = Sale.SaleDetails.Sum(x => x.TotalPrice);
         }
         private List<Sale> _sales;
         public List<Sale> Sales
@@ -37,6 +44,19 @@ namespace MyShop.ViewModels
             }
         }
 
+        private SaleDetail _SaleDetail = new SaleDetail();
+        public SaleDetail SaleDetail
+        {
+            get { return _SaleDetail; }
+            set
+            {
+                if (_SaleDetail != value)
+                {
+                    _SaleDetail = value;
+                    OnPropertyChanged(nameof(SaleDetail));
+                }
+            }
+        }
 
 
         private ObservableCollection<string> _paymentMethods;
@@ -52,35 +72,62 @@ namespace MyShop.ViewModels
                 }
             }
         }
-
-
-        private string _SelectedPaymentMethod;
-        public string SelectedPaymentMethod
+        private List<Supplier> _Suppliers;
+        public List<Supplier> Suppliers
         {
-            get { return _SelectedPaymentMethod; }
+            get { return _Suppliers; }
             set
             {
-                if (_SelectedPaymentMethod != value)
+                if (_Suppliers != value)
                 {
-                    _SelectedPaymentMethod = value;
-
-                    OnPropertyChanged(nameof(SelectedPaymentMethod));
-
-                    //Sales.PaymentMethod = SelectedPaymentMethod;
+                    _Suppliers = value;
+                    OnPropertyChanged(nameof(Suppliers));
                 }
             }
         }
 
-        private int _PurchasePrice;
-        public int PurchasePrice
+        private List<User> _Users;
+        public List<User> Users
         {
-            get { return _PurchasePrice; }
+            get { return _Users; }
             set
             {
-                if (_PurchasePrice != value)
+                if (_Users != value)
                 {
-                    _PurchasePrice = value;
-                    OnPropertyChanged(nameof(PurchasePrice));
+                    _Users = value;
+                    OnPropertyChanged(nameof(Users));
+                }
+            }
+        }
+
+
+        //private string _SelectedPaymentMethod;
+        //public string SelectedPaymentMethod
+        //{
+        //    get { return _SelectedPaymentMethod; }
+        //    set
+        //    {
+        //        if (_SelectedPaymentMethod != value)
+        //        {
+        //            _SelectedPaymentMethod = value;
+
+        //            OnPropertyChanged(nameof(SelectedPaymentMethod));
+
+        //            //Sales.PaymentMethod = SelectedPaymentMethod;
+        //        }
+        //    }
+        //}
+
+        private int _SalePrice;
+        public int SalePrice
+        {
+            get { return _SalePrice; }
+            set
+            {
+                if (_SalePrice != value)
+                {
+                    _SalePrice = value;
+                    OnPropertyChanged(nameof(SalePrice));
                 }
             }
         }
@@ -147,8 +194,21 @@ namespace MyShop.ViewModels
                 }
             }
         }
+        private List<Payment> _Payments;
+        public List<Payment> Payments
+        {
+            get { return _Payments; }
+            set
+            {
+                if (_Payments != value)
+                {
+                    _Payments = value;
+                    OnPropertyChanged(nameof(Payments));
+                }
+            }
+        }
 
-      
+
 
         #endregion
 
@@ -232,6 +292,40 @@ namespace MyShop.ViewModels
                 SaleList.Add((Sale)sale); // Add each fetched sale to the SalesList
             }
         }
+        private RelayCommand _AddDetailCommand;
+        public ICommand AddDetailCommand
+        {
+            get
+            {
+                if (_AddDetailCommand == null)
+                {
+                    _AddDetailCommand = new RelayCommand(p => ExecuteAddDetailCommand());
+                }
+                return _AddDetailCommand;
+            }
+        }
+        private void ExecuteAddDetailCommand()
+        {
+            if (SaleDetail.Product == null || SaleDetail.Quantity <= 0 || SaleDetail.Price <= 0)
+            {
+                MessageBox.Show("Please fill in all required fields.");
+                return;
+            }
+
+            Sale.SaleDetails.Add(new SaleDetail
+            {
+                Product = SaleDetail.Product,
+                Quantity = SaleDetail.Quantity,
+                Price = SaleDetail.Price,
+                TotalPrice = SaleDetail.TotalPrice,
+
+            });
+            OnPropertyChanged(nameof(SaleDetail)); // Notify UI
+
+            SaleDetail = new SaleDetail(); // Reset for new entry
+                                                   // Reset for the next entry
+        }
+
 
 
         #endregion

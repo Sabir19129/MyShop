@@ -18,6 +18,7 @@ namespace MyShop.ViewModels
             Sales = Sale.FetchSales();
             TabHeading = "Sale List";
             SelectedSale = new Sale();
+            
         }
         #region Property   
 

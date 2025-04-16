@@ -13,7 +13,10 @@
         <DataTemplate DataType="{x:Type viewModels:PurchaseListViewModel}">
             <userControls:PurchaseListControl />
         </DataTemplate>
-      
+        <DataTemplate DataType="{x:Type viewModels:SaleListViewModel}">
+            <userControls:SaleListControl />
+        </DataTemplate>
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -31,6 +34,7 @@
                 <Button Content="Product Detail" Click="Button_Click_1" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
                 <Button Content="Sale Detail" Click="Button_Click_3" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
                 <Button Content="Payment Detail" Click="Button_Click_5" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Button Content="Customer" Click="Button_Click_6" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
             </StackPanel>
             
         </Border>

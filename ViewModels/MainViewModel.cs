@@ -20,7 +20,7 @@ namespace MyShop.ViewModels
             TabViewModels = new ObservableCollection<TabViewModel>();
             TabViewModels.Add(new PurchaseListViewModel()) ;
            TabViewModels.Add(new SaleListViewModel());
-
+            TabViewModels.Add(new ProductListViewModel());
 
         }
 

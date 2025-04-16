@@ -10,19 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyShop.UserControls
+namespace MyShop.Views
 {
     /// <summary>
-    /// Interaction logic for SalesListControl.xaml
+    /// Interaction logic for CustomerView.xaml
     /// </summary>
-    public partial class SaleListControl : UserControl
+    public partial class CustomerView : Window
     {
-        public SaleListControl()
+        public CustomerView()
         {
             InitializeComponent();
         }
+
     }
+
+
 }

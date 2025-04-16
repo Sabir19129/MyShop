@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace MyShop.Models
 {
     public class Sale : BindableBase
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
+        public event EventHandler QuantityChanged;
 
         #region Properties
         public Sale()
         {
             SaleDetails = new ObservableCollection<SaleDetail>();
+            Payment = new Payment(); // Initialize empty payment
+            User = new User();       // Initialize empty user
         }
         private ObservableCollection<SaleDetail> _SaleDetails;
         public ObservableCollection<SaleDetail> SaleDetails
@@ -67,7 +71,21 @@ namespace MyShop.Models
                 {
                     _Quantity = value;
                     OnPropertyChanged(nameof(Quantity));
-                    //CalculateTotalSale();
+                    CalculateTotalPrice();
+                    QuantityChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+        private List<Supplier> _Suppliers;
+        public List<Supplier> Suppliers
+        {
+            get { return _Suppliers; }
+            set
+            {
+                if (_Suppliers != value)
+                {
+                    _Suppliers = value;
+                    OnPropertyChanged(nameof(Suppliers));
                 }
             }
         }
@@ -81,6 +99,21 @@ namespace MyShop.Models
                 {
                     _Payment = value;
                     OnPropertyChanged(nameof(Payment));
+
+                }
+
+            }
+        }
+        private User _User;
+        public User User
+        {
+            get { return _User; }
+            set
+            {
+                if (_User != value)
+                {
+                    _User = value;
+                    OnPropertyChanged(nameof(User));
                 }
             }
         }
@@ -94,10 +127,40 @@ namespace MyShop.Models
                 {
                     _Price = value;
                     OnPropertyChanged(nameof(Price));
+                    CalculateTotalPrice();
                 }
             }
         }
-
+        public void CalculateTotalPrice()
+        {
+            TotalPrice = Quantity * Price;
+        }
+        private decimal _TotalPrice;
+        public decimal TotalPrice
+        {
+            get { return _TotalPrice; }
+            set
+            {
+                if (_TotalPrice != value)
+                {
+                    _TotalPrice = value;
+                    OnPropertyChanged(nameof(TotalPrice));
+                }
+            }
+        }
+        private Supplier _Supplier;
+        public Supplier Supplier
+        {
+            get { return _Supplier; }
+            set
+            {
+                if (_Supplier != value)
+                {
+                    _Supplier = value;
+                    OnPropertyChanged(nameof(Supplier));
+                }
+            }
+        }
 
         #endregion
 
@@ -105,20 +168,20 @@ namespace MyShop.Models
         public void Insert()
 
         {
-            string query = "INSERT INTO Sale (Quantity, Payment, TotalPrice, SaleDate, Price) " +
-                           "VALUES (@ProductId, @Quantity, @Payment, @TotalPrice, @SaleDate, @Price)";
+            string query = "INSERT INTO Sale (PaymentId, TotalPrice, SaleDate, UserId) " +
+                "VALUES (@PaymentId, @TotalPrice, @SaleDate, @UserId)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Add parameters
-                    // Ensure Product.Id is valid
-                    // Ensure Quantity is not null
-                    command.Parameters.AddWithValue("@Quantity", Quantity);
+
+
+                    command.Parameters.AddWithValue("@UserId", User.Id);
                     command.Parameters.AddWithValue("@PaymentId", Payment.Id);
-                    command.Parameters.AddWithValue("@SaleDate", SaleDate);   // Ensure SaleDate is a valid DateTime
-                    command.Parameters.AddWithValue("@Price", Price);         // Ensure Price is a valid decimal
+                    command.Parameters.AddWithValue("@SaleDate", SaleDate);
+                    command.Parameters.AddWithValue("@TotalPrice", TotalPrice);
+                    // Ensure Price is a valid decimal
 
                     try
                     {
@@ -129,14 +192,14 @@ namespace MyShop.Models
                         {
                             foreach (var SaleDetail in SaleDetails)
                             {
-                                string queryDetail = "INSERT INTO SaleDetail (SaleId, ProductId, Quantity, Price) VALUES (@PurchaseId, @ProductId, @Quantity, @Price)";
+                                string queryDetail = "INSERT INTO SaleDetail (SaleId, ProductId, Quantity, Price) VALUES (@SaleId, @ProductId, @Quantity, @Price)";
                                 using (SqlCommand command1 = new SqlCommand(queryDetail, connection))
                                 {
-                                    command1.Parameters.AddWithValue("@SaleId", newId);
+                                    command1.Parameters.AddWithValue("@SaleId", Id);
                                     command1.Parameters.AddWithValue("@ProductId", SaleDetail.Product.Id);
-                                    command1.Parameters.AddWithValue("@TotalSales", SaleDetail.TotalSale);
-                                    command1.Parameters.AddWithValue("@Price", Price);
-                                    // command1.Parameters.AddWithValue("@TotalPrice", purchaseDetail.Quantity*purchaseDetail.Price);
+                                    command1.Parameters.AddWithValue("@Quantity", SaleDetail.Quantity);
+                                    command1.Parameters.AddWithValue("@Price", SaleDetail.Price);
+                                    // command1.Parameters.AddWithValue("@TotalPrice", SaleDetail.Quantity*purchaseDetail.Price);
                                     command1.ExecuteNonQuery();
                                 }
                                 Product.UpdateStock(SaleDetail.Product.Id, Quantity); // Update stock
@@ -201,7 +264,7 @@ namespace MyShop.Models
                 return;
             }
 
-            string query = "DELETE FROM Sales WHERE SalesId = @SalesId";
+            string query = "DELETE FROM Sale WHERE Id = @SalesId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -233,12 +296,7 @@ namespace MyShop.Models
 
         public static List<Sale> FetchSales()
         {
-            string query = @"SELECT s.Id AS SalesId, p.Id AS ProductId, p.Name AS ProductName,
-                    s.Quantity, s.Price, sd.TotalPrice, s.SaleDate,
-                    pm.Id AS PaymentId, pm.Name AS PaymentMethod
-                    FROM Sales s
-                    INNER JOIN Product p ON p.Id = s.ProductId
-                    INNER JOIN Payment pm ON pm.Id = s.PaymentId";
+            string query = @"SELECT s.Id AS SaleId, s.SaleDate,  pm.Id AS PaymentId, pm.Name AS PaymentMethod FROM Sale s INNER JOIN Payment pm ON pm.Id = s.PaymentId";
 
             List<Sale> sales = new List<Sale>();
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -253,9 +311,8 @@ namespace MyShop.Models
                             while (reader.Read())
                             {
                                 var Sale = new Sale()
-                                {
-                                    Quantity = Convert.ToInt32(reader["Quantity"]),
-                                    Price = Convert.ToInt32(reader["Price"]),
+                                {        
+                                    Id = Convert.ToInt32(reader["SaleId"]),
                                     SaleDate = reader["SaleDate"] != DBNull.Value ? (DateTime)reader["SaleDate"] : default(DateTime),
                                     Payment = new Payment()
                                     {
@@ -263,7 +320,7 @@ namespace MyShop.Models
                                         Name = reader["PaymentMethod"].ToString()
                                     }
                                 };
-                                //  Sales.Add(Sales);
+                                sales.Add(Sale);
                                 // FillSalesDetail(Sales);
                             }
                         }
@@ -276,6 +333,7 @@ namespace MyShop.Models
             }
             return sales;
         }
+       
         #endregion
     }
 }
