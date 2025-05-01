@@ -78,5 +78,13 @@ namespace MyShop
             CustomerView.DataContext = CustomerViewModel;
             CustomerView.ShowDialog();
         }
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            // Make sure to instantiate the BranchView and ViewModel
+            BranchView BranchView = new BranchView();
+            BranchViewModel BranchViewModel = new BranchViewModel();
+            BranchView.DataContext = BranchViewModel; // Set DataContext for data binding
+            BranchView.ShowDialog(); // Open BranchView as a dialog
+        }
     }
 }

@@ -2,12 +2,59 @@
 using System.Windows;
 using System.Data.SqlClient;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace MyShop.Models
 {
     public class Product : BindableBase// The BindableBase class implements INotifyPropertyChanged to enable property change notifications
     {
         private static string connectionString = "Data Source=SABIR\\SQLEXPRESS01;Initial Catalog=MyShopDb;Integrated Security=True";
+   
+        private string _Madein;
+        public string Madein
+        {
+            get { return _Madein; }
+            set
+            {
+                if (_Madein != value)
+                {
+                    _Madein = value;
+                    OnPropertyChanged(nameof(Madein)); // Fixed here
+                }
+            }
+        }
+        private int _Stock;
+        public int Stock
+        {
+            get => _Stock;
+            // get { return _Stock; } , both can be used Lambda and the return method
+            set
+            {
+                if (_Stock != value)
+                {
+                    _Stock = value;
+                    OnPropertyChanged(nameof(Stock)); // Fixed here
+                }
+            }
+        }
+
+
+
+        private int _Price;
+        public int Price
+        {
+            get { return _Price; }
+            set
+            {
+                if (_Price != value)
+                {
+                    _Price = value;
+                    OnPropertyChanged(nameof(Price));
+                    //CalculateTotalPrice();
+                }
+            }
+        }
+
 
         #region Properties
 
@@ -38,48 +85,7 @@ namespace MyShop.Models
             }
         }
 
-        private int _Price;
-        public int Price
-        {
-            get { return _Price; }
-            set
-            {
-                if (_Price != value)
-                {
-                    _Price = value;
-                    OnPropertyChanged(nameof(Price)); // Fixed here
-                }
-            }
-        }
-
-        private string _Madein;
-        public string Madein
-        {
-            get { return _Madein; }
-            set
-            {
-                if (_Madein != value)
-                {
-                    _Madein = value;
-                    OnPropertyChanged(nameof(Madein)); // Fixed here
-                }
-            }
-        }
-        private int _Stock;
-        public int Stock
-        {
-            get =>_Stock;
-           // get { return _Stock; } , both can be used Lambda and the return method
-            set
-            {
-                if (_Stock != value)
-                {
-                    _Stock = value;
-                    OnPropertyChanged(nameof(Stock)); // Fixed here
-                }
-            }
-        }
-
+      
         #endregion
 
         #region Function

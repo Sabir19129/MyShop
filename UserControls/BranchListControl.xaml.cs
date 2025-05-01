@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyShop.Views
+namespace MyShop.UserControls
 {
     /// <summary>
-    /// Interaction logic for PurchaseListView.xaml
+    /// Interaction logic for BranchListControl.xaml
     /// </summary>
-    public partial class PurchaseListView : Window
+    public partial class BranchListControl : UserControl
     {
-        public PurchaseListView()
+        public BranchListControl()
         {
             InitializeComponent();
         }

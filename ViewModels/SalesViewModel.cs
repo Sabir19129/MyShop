@@ -22,7 +22,7 @@ namespace MyShop.ViewModels
             SaleDetail = new SaleDetail();
             Payments = Payment.FetchPayments();
             Suppliers = Supplier.FetchSuppliers();
-            Users = User.FetchUsers();
+            Customers = Customer.FetchCustomers();
 
         }
         private void SaleDetails_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -43,6 +43,7 @@ namespace MyShop.ViewModels
                 }
             }
         }
+
 
         private SaleDetail _SaleDetail = new SaleDetail();
         public SaleDetail SaleDetail
@@ -86,16 +87,17 @@ namespace MyShop.ViewModels
             }
         }
 
-        private List<User> _Users;
-        public List<User> Users
+
+        private List<Customer> _Customers;
+        public List<Customer> Customers
         {
-            get { return _Users; }
+            get { return _Customers; }
             set
             {
-                if (_Users != value)
+                if (_Customers != value)
                 {
-                    _Users = value;
-                    OnPropertyChanged(nameof(Users));
+                    _Customers = value;
+                    OnPropertyChanged(nameof(Customers));
                 }
             }
         }
@@ -230,6 +232,7 @@ namespace MyShop.ViewModels
         private void ExecuteSaveCommand()
         {
             Sale.Insert(); // Insert the Sales
+            MessageBox.Show("Sale saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             Sale = new Sale(); // Reset the Sales object 
         }
 

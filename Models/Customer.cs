@@ -167,7 +167,7 @@ namespace MyShop.Models
         }
 
         // Method to fetch all Customer
-        public static List<Customer> FetchCustomer()
+        public static List<Customer> FetchCustomers()
         {
             string query = "SELECT Id, Name FROM Customer";
             List<Customer> Customer = new List<Customer>();

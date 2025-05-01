@@ -16,6 +16,10 @@
         <DataTemplate DataType="{x:Type viewModels:SaleListViewModel}">
             <userControls:SaleListControl />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:BranchListViewModel}">
+            <userControls:BranchListControl />
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid>
@@ -23,38 +27,48 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>  
         </Grid.ColumnDefinitions>
-        
-      
-        
-        <Border  CornerRadius="10" >
+
+
+
+        <Border  CornerRadius="10" BorderThickness="1" BorderBrush="#7b1113" Margin="5" >
             
             <StackPanel>
-                <Button Content="User Detail" Click="Button_Click"  FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
-                <Button Content="Supplier Detail" Click="Button_Click_4" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
-                <Button Content="Product Detail" Click="Button_Click_1" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
-                <Button Content="Sale Detail" Click="Button_Click_3" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
-                <Button Content="Payment Detail" Click="Button_Click_5" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
-                <Button Content="Customer" Click="Button_Click_6" FontSize="25" Margin="20,5" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Button Content="User Detail" Click="Button_Click"  FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/> 
+                <Button Content="Supplier Detail" Click="Button_Click_4" FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/>
+                <Button Content="Product Detail" Click="Button_Click_1" FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/>
+                <Button Content="Sale Detail" Click="Button_Click_3" FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/>
+                <Button Content="Payment Detail" Click="Button_Click_5" FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/>
+                <Button Content="Customer Detail" Click="Button_Click_6" FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/>
+                <Button Content="Branch Detail" Click="Button_Click_7" FontSize="25" Margin="20,10" Background="#add8e6" Foreground="Black" Style="{StaticResource BaseButtonStyle}"/>
+                <Border BorderThickness="0,1,0,0" BorderBrush="#7b1113" Margin="0,5,0,0"/>
             </StackPanel>
             
         </Border>
-       
 
-        <TabControl Grid.Column="1" ItemsSource="{Binding TabViewModels}"  SelectedIndex="0" >
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding TabHeading}" 
+        <Border  CornerRadius="10" BorderThickness="1" BorderBrush="LightGray" Margin="5" Grid.Column="1">
+
+            <TabControl  ItemsSource="{Binding TabViewModels}"  SelectedIndex="0" Margin="5" BorderThickness="0">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TabHeading}" 
                        FontSize="14" 
                        Foreground="Black" 
-                       FontWeight="Bold" Margin="5" Cursor="Hand"/> 
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <!--<TabControl.ItemContainerStyle>
+                       FontWeight="Bold" Margin="5" Cursor="Hand"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <!--<TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
             </TabControl.ItemContainerStyle>-->
-        </TabControl>
+            </TabControl>
+        </Border>
     </Grid> 
     
 

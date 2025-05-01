@@ -220,10 +220,10 @@ SelectedItem="{Binding Sale.Payment, Mode=TwoWay, UpdateSourceTrigger=PropertyCh
            
         </StackPanel>
             <StackPanel Margin="5">
-                <TextBlock Style="{StaticResource FormTextBlockStyle}"  Text="Store List" Margin="5" FontSize="12" Foreground="Black"  
+                <TextBlock Style="{StaticResource FormTextBlockStyle}"  Text="Customer List" Margin="5" FontSize="12" Foreground="Black"  
           Width="100" Height="20"
            HorizontalAlignment="Left" FontWeight="DemiBold"/>
-                <ComboBox Grid.Column="1" Width="100" ItemsSource="{Binding Users}" SelectedItem="{Binding Sale.User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <ComboBox Grid.Column="1" Width="100" ItemsSource="{Binding Customers}" SelectedItem="{Binding Sale.Customer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 Height="20"
  Background="MidnightBlue" BorderBrush="MidnightBlue" Foreground="MidnightBlue"/>
             </StackPanel>

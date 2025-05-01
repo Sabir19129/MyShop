@@ -65,7 +65,7 @@ namespace MyShop.ViewModels
         {
             Customer.Insert(); // Insert the Customer
             Customer = new Customer(); // Reset the Customer object
-            Customers = Customer.FetchCustomer();
+            Customers = Customer.FetchCustomers();
         }
 
         RelayCommand _UpdateCommand;
@@ -86,7 +86,7 @@ namespace MyShop.ViewModels
             Customer.Update(); // update the Customer
             Customer = new Customer(); // Reset the Customer object
 
-            Customers = Customer.FetchCustomer(); // Call the Get method from the Customer model
+            Customers = Customer.FetchCustomers(); // Call the Get method from the Customer model
 
         }
 
@@ -121,7 +121,7 @@ namespace MyShop.ViewModels
                 {
                     Customer.Delete(Customer.Id); // Proceed with deletion
 
-                    var Customers = Customer.FetchCustomer(); // Fetch Customers
+                    var Customers = Customer.FetchCustomers(); // Fetch Customers
                     if (Customers != null) // Check if Customers list is not null
                     {
                         Customers = Customers; // Assign to Customers
@@ -161,7 +161,7 @@ namespace MyShop.ViewModels
         // Fetch data from the Customer model and update the Customers list
         private void ExecuteFetchCommand()
         {
-            Customers = Customer.FetchCustomer(); // Call the Get method from the Customer model
+            Customers = Customer.FetchCustomers(); // Call the Get method from the Customer model
         }
     }
     #endregion

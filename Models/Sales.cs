@@ -18,7 +18,7 @@ namespace MyShop.Models
         {
             SaleDetails = new ObservableCollection<SaleDetail>();
             Payment = new Payment(); // Initialize empty payment
-            User = new User();       // Initialize empty user
+            Customer = new Customer();       // Initialize empty Customer
         }
         private ObservableCollection<SaleDetail> _SaleDetails;
         public ObservableCollection<SaleDetail> SaleDetails
@@ -104,16 +104,16 @@ namespace MyShop.Models
 
             }
         }
-        private User _User;
-        public User User
+        private Customer _Customer;
+        public Customer Customer
         {
-            get { return _User; }
+            get { return _Customer; }
             set
             {
-                if (_User != value)
+                if (_Customer != value)
                 {
-                    _User = value;
-                    OnPropertyChanged(nameof(User));
+                    _Customer = value;
+                    OnPropertyChanged(nameof(Customer));
                 }
             }
         }
@@ -164,12 +164,13 @@ namespace MyShop.Models
 
         #endregion
 
+
         #region Functions
         public void Insert()
 
         {
-            string query = "INSERT INTO Sale (PaymentId, TotalPrice, SaleDate, UserId) " +
-                "VALUES (@PaymentId, @TotalPrice, @SaleDate, @UserId)";
+            string query = "INSERT INTO Sale (PaymentId, TotalPrice, SaleDate, CustomerId) " +
+                "VALUES (@PaymentId, @TotalPrice, @SaleDate, @CustomerId)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -177,7 +178,7 @@ namespace MyShop.Models
                 {
 
 
-                    command.Parameters.AddWithValue("@UserId", User.Id);
+                    command.Parameters.AddWithValue("@CustomerId", Customer.Id);
                     command.Parameters.AddWithValue("@PaymentId", Payment.Id);
                     command.Parameters.AddWithValue("@SaleDate", SaleDate);
                     command.Parameters.AddWithValue("@TotalPrice", TotalPrice);
