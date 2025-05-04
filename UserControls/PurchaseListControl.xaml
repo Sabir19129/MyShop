@@ -39,6 +39,8 @@ Foreground="White" Height="25" Margin="3" HorizontalAlignment="Left" />
             Foreground="Black" Height="25" Margin="2" HorizontalAlignment="Left" />
                     <Button Content="Delete" Style="{StaticResource BaseButtonStyle}" Command="{Binding DeletePurchaseCommand}" Width="55" Background="#a52a2a" 
             Foreground="White" Height="25" Margin="2" HorizontalAlignment="Left" />
+                    <Button Content="Print" Style="{StaticResource BaseButtonStyle}" Command="{Binding PrintCommand}" Width="55" Background="#a52a2a" 
+Foreground="White" Height="25" Margin="2" HorizontalAlignment="Left" />
                 </StackPanel>
             </Grid>
         </Border>

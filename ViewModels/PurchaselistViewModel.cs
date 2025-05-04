@@ -1,4 +1,5 @@
-﻿using MyShop.Common;
+﻿//using Microsoft.Reporting.WinForms;
+using MyShop.Common;
 using MyShop.Models;
 using MyShop.ViewModels;
 using MyShop.Views;
@@ -127,6 +128,41 @@ namespace MyShop.ViewModels
             Purchases = Purchase.FetchPurchases();
         }
 
+        private RelayCommand _PrintCommand;
+        public ICommand PrintCommand
+        {
+            get
+            {
+                if (_PrintCommand == null)
+                {
+                    _PrintCommand = new RelayCommand(p => ExecutePrintCommand());
+                }
+                return _PrintCommand;
+            }
 
+        }
+        private void ExecutePrintCommand()
+        {
+            //// Create a report viewer instance
+            //ReportViewer reportViewer = new ReportViewer();
+
+            //// Set processing mode (Local or Remote)
+            //reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            //// Set the report path (without .rdlc extension if embedded)
+            //reportViewer.LocalReport.ReportPath = "Report.rdlc";
+            //// Or for embedded resources:
+            //// reportViewer.LocalReport.ReportEmbeddedResource = "YourNamespace.YourReport.rdlc";
+
+            //// Add data sources if needed
+            //// reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetName", yourData));
+
+            //// Refresh the report
+            //reportViewer.RefreshReport();
+
+            //// Print the report
+            //reportViewer.PrintDialog();
+        }
     }
+
 }

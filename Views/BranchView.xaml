@@ -66,11 +66,11 @@ Margin="15">
                 <TextBox   Text="{Binding Branch.Value, UpdateSourceTrigger=PropertyChanged}" Margin="5,2,2,5" Width="210" HorizontalAlignment="Left" />
                 <Button Content="Branch Detail" Style="{StaticResource BaseButtonStyle}" Command="{Binding AddDetailCommand}" Width="110" 
          Background="#400880" Foreground="White" Height="25" Margin="5,2" HorizontalAlignment="Left" />
-                <StackPanel Orientation="Horizontal">
+                <!--<StackPanel Orientation="Horizontal">
                     <TextBlock Text="Detail Id" Margin="5,2" Width="90"/>
                     <TextBox Width="110" HorizontalAlignment="Left" Text="{Binding BranchDetail.Id, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="5,2" IsEnabled="False" />
-                </StackPanel>
+                     Margin="5,2" IsEnabled="True" />
+                </StackPanel>-->
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="No 0f Employees" Margin="5,2" Width="90"/>
                     <TextBox Width="110" HorizontalAlignment="Left" Text="{Binding BranchDetail.NoOfEmployee, UpdateSourceTrigger=PropertyChanged}" 
@@ -79,11 +79,11 @@ Margin="15">
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <StackPanel Margin="0,0,0,0">
                         <TextBlock Text="Start Time" Margin="5" />
-                        <ComboBox Width="90" ItemsSource="{Binding TimeOptions}" SelectedItem="{Binding Branch.StartTime}" Margin="5,2" />
+                        <ComboBox Width="90" ItemsSource="{Binding TimeOptions}" SelectedItem="{Binding BranchDetail.StartTime}" Margin="5,2" />
                 </StackPanel>
                     <StackPanel>
                 <TextBlock Text="End Time" Margin="5" />
-                    <ComboBox Width="95" ItemsSource="{Binding TimeOptions}" SelectedItem="{Binding Branch.EndTime}" Margin="5,2" />
+                    <ComboBox Width="95" ItemsSource="{Binding TimeOptions}" SelectedItem="{Binding BranchDetail.EndTime}" Margin="5,2" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -131,7 +131,7 @@ Margin="15">
             <DataGrid CanUserAddRows="False"  Margin="0,0,5,5" Background="Transparent" AutoGenerateColumns="False" BorderThickness="0"  
                       ItemsSource="{Binding Branch.BranchDetails}" SelectionChanged="DataGrid_SelectionChanged_1"  >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Detail Id" Binding="{Binding Id}" FontWeight="Bold" Width="*" />
+                    <!--<DataGridTextColumn Header="Detail Id" Binding="{Binding Id}" FontWeight="Bold" Width="*" />-->
                     <DataGridTextColumn Header="No of Employees" Binding="{Binding NoOfEmployee}" FontWeight="Bold" Width="*" />
                     <DataGridTextColumn Header="Start Timings" Binding="{Binding StartTime}" FontWeight="Bold" Width="*" />
                     <DataGridTextColumn Header="End Timings" Binding="{Binding EndTime}" FontWeight="Bold" Width="*" />
